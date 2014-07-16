@@ -1,0 +1,72 @@
+<!doctype html>
+<html class="no-js" ng-app="switchr">
+  <head>
+    <meta charset="utf-8">
+    <title>SWITCHR</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp,app}) styles/main.css -->
+    <link rel="stylesheet" href="styles/css/main.css">
+    <!-- endbuild -->
+
+    <!-- build:js scripts/modernizr.js -->
+    <script src="bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="contain-to-grid sticky">
+      <nav class="top-bar" data-topbar data-options="sticky_on: large">
+        <section class="top-bar-section">
+          <ul class="title-area">
+            <li class="name title-gray"><h1><a sref="login">365bpm</a></h1></li>
+          </ul>
+          <ul class="right">
+            <li class=""><a ui-sref="main.login" class="ng-cloak" ng-cloak>{{ $root.currentUser.user || 'Login' }}</a></li>
+            <li class=""><a ng-click="$root.logout()" class="ng-cloak" ng-show="$root.currentUser.user" ng-cloak>Logout</a></li>
+          </ul>
+        </section>       
+      </nav>
+    </div>
+    <div ui-view></div>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
+    <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script> -->
+    <script src="bower_components/foundation/js/foundation.js"></script>
+    <script src="bower_components/angular-foundation/mm-foundation-tpls-0.3.0.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({app,.tmp}) scripts/main.js -->
+    <script src="scripts/switchr.js"></script>
+    <script src="scripts/main/loginController.js"></script>
+    <script src="scripts/main/homeController.js"></script>
+    <script src="scripts/main/mainController.js"></script>
+    <script src="scripts/main/blogController.js"></script>
+    <!-- inject:partials -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<div class="row">
+  <!-- <p class="blog-nav-heading">Welcome, {{ token + '.' || 'friend.'}}</p> -->
+</div>
+<!-- <div class="blog-nav-container">
+    <ul class="inline-list no-bullet">
+      <li class='button small blog-nav'>Do Something</li>
+      <li class='button small blog-nav'>Do Something Else</li>
+      <li class='button small blog-nav'>And Another Thing</li>
+      <li class='button small blog-nav'>Also This</li>
+    </ul>
+</div> -->
+<div class="row blog_view">
+  <div class="large-12 columns">
+  <p> Blog some stuff.</p>
+    <form class="blogForm" name="blogEditForm">
+      <textarea class="blogEditInput" name="blogEditInput" ng-model="blogEditInput"></textarea>
+      <div class="buttons">
+        <button>Cancel</button>
+        <button ng-disabled="!blogEditForm.blogEditInput.$dirty">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

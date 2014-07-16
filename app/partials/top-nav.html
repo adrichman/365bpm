@@ -1,0 +1,14 @@
+<div class="contain-to-grid sticky">
+  <nav class="top-bar" data-topbar data-options="sticky_on: large">
+    <section class="top-bar-section">
+      <ul class="title-area">
+        <li class="name title-gray"><h1><a sref="login">365bpm</a></h1></li>
+      </ul>
+      <ul class="right">
+        <li class=""><a ui-sref="login" class="ng-cloak" ng-cloak>{{ $root.currentUser.user || 'Login' }}</a></li>
+        <li class=""><a ng-click="$root.logout()" class="ng-cloak" ng-show="$root.currentUser.user" ng-cloak>Logout</a></li>
+      </ul>
+    </section>       
+  </nav>
+</div>
+<ui-view/>

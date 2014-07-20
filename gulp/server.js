@@ -6,7 +6,7 @@ var browserSync = require('browser-sync');
 var httpProxy = require('http-proxy');
 
 /* This configuration allow you to configure browser sync to proxy your backend */
-var proxyTarget = 'http://127.0.0.1:8000/'; // The location of your backend
+var proxyTarget = 'http://www.fakehost.com:8000/'; // The location of your backend
 var proxyApiPrefix = 'api'; // The element in the URL which differentiate between API request and static file request
 
 var proxy = httpProxy.createProxyServer({

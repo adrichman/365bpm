@@ -5,9 +5,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: 'switchr',
-      user:     'Port-O-Bucket',
-      password: ''
+      database: process.env.DB_365BPM_DB,
+      user:     process.env.DB_365BPM_USER,
+      password: process.env.DB_365BPM_PWD
     },
     pool: {
       min: 2,
@@ -21,9 +21,9 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: 'switchr',
-      user:     'username',
-      password: 'password'
+      database: process.env.DB_365BPM_DB,
+      user:     process.env.DB_365BPM_USER,
+      password: process.env.DB_365BPM_PWD
     },
     pool: {
       min: 2,
@@ -37,9 +37,9 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: 'switchr',
-      user:     'username',
-      password: 'password'
+      database: process.env.DB_365BPM_DB,
+      user:     process.env.DB_365BPM_USER,
+      password: process.env.DB_365BPM_PWD
     },
     pool: {
       min: 2,

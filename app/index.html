@@ -29,11 +29,12 @@
       <nav class="top-bar" data-topbar data-options="sticky_on: large">
         <section class="top-bar-section">
           <ul class="title-area">
-            <li class="name title-gray"><h1><a sref="login">365bpm</a></h1></li>
+            <li class="name title-gray"><h1><a ui-sref="home">365bpm</a></h1></li>
           </ul>
-          <ul class="right">
-            <li class=""><a ui-sref="main.login" class="ng-cloak" ng-cloak>{{ $root.currentUser.user || 'Login' }}</a></li>
-            <li class=""><a ng-click="$root.logout()" class="ng-cloak" ng-show="$root.currentUser.user" ng-cloak>Logout</a></li>
+          <ul class="right" class="ng-cloak" >
+            <li class="ng-cloak" ng-if="$root.currentUser.user === 'null'"><a ui-sref="main.login" class="ng-cloak" ng-cloak>Login</a></li>
+            <li class="ng-cloak" ng-if="$root.currentUser.user !== 'null'"><a ui-sref="home" class="ng-cloak" ng-cloak>{{ $root.currentUser.user }}</a></li>
+            <li ng-cloak class="ng-cloak" ng-if="$root.currentUser.user !== 'null'"><a ng-click="$root.logout()" class="ng-cloak" ng-cloak>Logout</a></li>
           </ul>
         </section>       
       </nav>
@@ -42,19 +43,17 @@
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
-    <!-- <script src="bower_components/jquery/dist/jquery.js"></script> -->
+    <script src="bower_components/tinymce/tinymce.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-    <script src="bower_components/restangular/dist/restangular.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/fastclick/lib/fastclick.js"></script>
-    <!-- <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
-    <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script> -->
-    <script src="bower_components/foundation/js/foundation.js"></script>
-    <script src="bower_components/angular-foundation/mm-foundation-tpls-0.3.0.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-foundation/mm-foundation-tpls-0.3.0.min.js"></script>
+    <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/angular-ui-tinymce/src/tinymce.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -62,6 +61,7 @@
     <script src="scripts/switchr.js"></script>
     <script src="scripts/main/loginController.js"></script>
     <script src="scripts/main/homeController.js"></script>
+    <script src="scripts/main/playlistNavController.js"></script>
     <script src="scripts/main/mainController.js"></script>
     <script src="scripts/main/blogController.js"></script>
     <!-- inject:partials -->

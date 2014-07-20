@@ -9,7 +9,7 @@ describe('controllers', function(){
   	scope = $rootScope.$new();
   }));
 
-  it('should define more than 5 awesome things', inject(function($controller) {
+  xit('should define more than 5 awesome things', inject(function($controller) {
     expect(scope.awesomeThings).toBeUndefined();
 
     $controller('MainCtrl', {

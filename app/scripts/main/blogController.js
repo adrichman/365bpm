@@ -23,6 +23,7 @@ angular.module('switchr')
 
     if (entry) {
       scope.blogEditInput.input = entry.body;
+      $scope.blogEditInput.originalInput = entry.body;
       scope.blogEditInput.entry_id = entry.id;       
     } else {
       scope.blogEditInput.input = "I have something to say about " + newVal + "."
@@ -44,6 +45,10 @@ angular.module('switchr')
     image_advtab: true,
     height: "300px",
     width: "650px"
+  };
+
+  $scope.resetForm = function(){
+    $scope.blogEditInput.input = $scope.blogEditInput.originalInput;
   };
 
   $scope.submitForm = function(){

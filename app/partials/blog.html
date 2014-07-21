@@ -4,7 +4,7 @@
     <form class="blogForm" name="blogEditForm" ng-show="nowEditing.display" >
       <textarea ui-tinymce="tinymceOptions" class="blogEditInput" name="blogEditInput" ng-model="blogEditInput.input"></textarea>
       <div class="buttons">
-        <button>Cancel</button>
+        <button ng-click="resetForm()">Cancel</button>
         <button ng-disabled="!blogEditForm.blogEditInput.$dirty" ng-click="submitForm()">{{ submitText }}</button>
       </div>
     </form>

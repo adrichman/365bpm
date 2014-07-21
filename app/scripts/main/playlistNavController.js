@@ -1,24 +1,20 @@
 'use strict';
 
 angular.module('switchr')
-.controller('PlaylistNavController', function ($window, $state, $scope, $stateParams, $rootScope, $timeout, Beats, SwitchrApi, Blog, UserService) {
-  $scope.userImage = {};
+.controller('PlaylistNavController', function ($window, $state, $scope, $stateParams, $rootScope, $timeout, Blog, UserService) {
+  $scope.userImage = UserService.currentUser.img;
+  $scope.playlists = UserService.currentUser.playlists;
   $scope.nowEditing = Blog.nowEditing;
   $scope.lastIndex = -1;
-  $scope.loading = true;
 
-  $scope.edit = function(trackId, trackName, index, playlistIndex){
-    $scope.$emit('edit', [trackId, trackName, playlistIndex]);
+  $scope.edit = function(trackId, trackName, index, playlistId){
+    var entry = _.find(UserService.currentUser.entries, function(entry){
+      return entry.songs_id === trackId && entry.playlists_id === playlistId;
+    }) || null;
+    var params = [trackId, trackName, index, playlistId];
+    if (entry) params[4] = entry.id;
+    $scope.$emit('edit', params);
     $scope.lastIndex = index;
-  }
-
-  if (UserService.currentUser.token()) {      
-    Beats.fetchAll($scope, $rootScope).then(function(promise){
-      SwitchrApi.sync($scope).then(function(){
-        console.log(arguments);
-        $scope.loading = false;
-      })
-    });
   }
 })
 .directive('blog', function($window){

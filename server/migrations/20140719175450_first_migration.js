@@ -16,7 +16,8 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('playlists', function(t){
       t.string('id').primary();
       t.string('name');
-      t.string('user_id').references('id').inTable('users');
+      t.string('users_id').references('id').inTable('users');
+      t.string('entries_id').references('id').inTable('entries');
       t.timestamps();
     }),
 
@@ -31,25 +32,25 @@ exports.up = function(knex, Promise) {
     }),
     
     knex.schema.createTable('artists_songs', function(t){
-      t.string('artist_id').references('id').inTable('artists');
-      t.string('song_id').references('id').inTable('songs');
-      t.primary(['artist_id', 'song_id']);
+      t.string('artists_id').references('id').inTable('artists');
+      t.string('songs_id').references('id').inTable('songs');
+      t.primary(['artists_id', 'songs_id']);
     }),
 
     knex.schema.createTable('entries', function(t){
       t.increments('id').primary();
       t.string('title');
       t.text('body', 'longtext');
-      t.string('user_id').references('id').inTable('users');
-      t.string('song_id').references('id').inTable('songs');
-      t.string('playlist_id').references('id').inTable('playlists');
+      t.string('users_id').references('id').inTable('users');
+      t.string('songs_id').references('id').inTable('songs');
+      t.string('playlists_id').references('id').inTable('playlists');
       t.timestamps();
     }),
     
     knex.schema.createTable('playlists_songs', function(t){
-      t.string('playlist_id').references('id').inTable('playlists');
-      t.string('song_id').references('id').inTable('songs');
-      t.primary(['playlist_id','song_id']);
+      t.string('playlists_id').references('id').inTable('playlists');
+      t.string('songs_id').references('id').inTable('songs');
+      t.primary(['playlists_id','song_id']);
     })
   ]);
 };

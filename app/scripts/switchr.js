@@ -11,7 +11,6 @@ var isLoggedIn = function($state, token){
 
 angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', 'mm.foundation', 'ngAnimate', 'ui.tinymce'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
-  
   RestangularProvider.setBaseUrl('http://www.fakehost.com:8000/api/v1');
 
   $stateProvider
@@ -23,7 +22,36 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
     .state('home', {
       url: '/home?scope&access_token&token_type&expires_in&state',
       templateUrl: 'partials/home.html',
-      controller: 'HomeController'
+      controller: 'HomeController',
+      resolve : {
+        loading : function($window, $q, Restangular, UserService, Beats, SwitchrApi, $rootScope, $stateParams){
+                    console.log('STATE PARAMS', $stateParams);
+                    if ($stateParams['access_token']){
+                      $window.localStorage['beats_token'] = $stateParams['access_token'];
+                    }
+                    var deferred = $q.defer();  
+                    var scope = $rootScope.$new();
+                    console.log("SCOPES!!", scope, $rootScope)
+                    Beats.fetchAll(scope, $rootScope)
+                    .then(function(promise){
+                      SwitchrApi.sync(UserService).then(function(){
+                        Restangular.one('users', UserService.currentUser.id())
+                        .getList('entries')
+                        .then(
+                          function(data){ 
+                            UserService.currentUser.entries = data;
+                            deferred.resolve(false); 
+                          },
+                          function(err){ 
+                            console.log('ERR', err);
+                            deferred.reject(false); 
+                          }
+                        );
+                      });
+                    });
+                    return deferred.promise;
+                  }
+      }
     })
     .state('main.login', {
       url: 'login',
@@ -67,13 +95,17 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
 .service('UserService', ['$window', function($window){
   return {
     currentUser : {
-      token:  function(){ return $window.localStorage['beats_token'] },
-      id:     function(){ return $window.localStorage['beats_id'] },
-      name:   function(){ return $window.localStorage['beats_user'] }
+      token:        function(){ return $window.localStorage['beats_token'] },
+      id:           function(){ return $window.localStorage['beats_id'] },
+      name:         function(){ return $window.localStorage['beats_user'] },
+      userData:     {},
+      img:          { url : '' },
+      playlists:    [],
+      entries:      []
     }
   }
 }])
-.service('Beats', function($window, $http, $q){
+.service('Beats', function($window, $http, $q, UserService){
   return {
     fetchAll    : function($scope, $rootScope){
                     var userId;
@@ -91,17 +123,16 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
                       deferred.resolve($q.all([
                         self.getUser(userId).success(function(userData){
                           console.log('getUser', userData);
-                          $scope.userData = userData.data;
-                          $scope.name = $rootScope.currentUser.name = userData.data['full_name'];
-                          $window.localStorage['beats_user'] = $rootScope.currentUser.name;
+                          UserService.currentUser.userData = userData.data;
+                          $window.localStorage['beats_user'] = $rootScope.currentUser.name = userData.data['full_name'];
                         }).error(function(){
                           throw new Error({message:'There was an error during the getUser API call.'})
                         }),
                           
                         self.getPlaylists(userId).success(function(playList){
                           console.log('getPlaylists', playList);
-                          $scope.playlists = playList.data.reverse();
-                          $scope.userImage.url  = 'https://partner.api.beatsmusic.com/v1/api/users/' + userId + 
+                          UserService.currentUser.playlists = playList.data.reverse();
+                          UserService.currentUser.img.url  = 'https://partner.api.beatsmusic.com/v1/api/users/' + userId + 
                                                   '/images/default?client_id=eunjtjg4755smmz8q942e9kp';
                         }).error(function(){
                           throw new Error({message:'There was an error during the getPlayList API call.'})
@@ -115,6 +146,7 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
                   },
 
     getMe       : function(){
+                    console.log('BEARER:', $window.localStorage['beats_token'])
                     return $http.get('https://partner.api.beatsmusic.com/v1/api/me', 
                       { headers: { Authorization: "Bearer " + $window.localStorage['beats_token'] } } 
                     );
@@ -154,13 +186,12 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
 }])
 .service('SwitchrApi', ['Models', '$http', function(Models, $http){
   return {
-    sync  : function(scope){
-              console.log('sync scope', scope);
+    sync  : function(UserService){
               return $http.post('http://www.fakehost.com:8000/api/v1/sync', null, {
                 params: {
-                  currentUser : scope.currentUser,
-                  userData    : scope.userData,
-                  playlists   : scope.playlists
+                  currentUser : UserService.currentUser,
+                  userData    : UserService.currentUser.userData,
+                  playlists   : UserService.currentUser.playlists
                 }
               });
               win.user = scope;

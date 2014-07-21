@@ -1,34 +1,32 @@
 'use strict';
 
 angular.module('switchr')
-.controller('BlogController', ['$state','$scope','$stateParams', '$rootScope', 'Blog','UserService','Restangular', function ($state, $scope, $stateParams, $rootScope, Blog, UserService, Restangular) {
-  var entries;
-
-  Restangular.one('users', UserService.currentUser.id())
-  .getList('entries')
-  .then(function(data){ entries = data });
+.controller('BlogController', ['$state','$scope','$stateParams', '$rootScope', 'Blog','UserService','Restangular','$modal', function ($state, $scope, $stateParams, $rootScope, Blog, UserService, Restangular, $modal) {
+  $scope.submitText = "Submit";
+  $scope.entries = UserService.currentUser.entries;
 
   $scope.$on('edit', function(e, data){
     Blog.nowEditing.id = data[0];
     $scope.nowEditing.display = Blog.nowEditing.display = data[1];
     Blog.nowEditing.playListId = data[3];
+    Blog.nowEditing.entry_id = data[4] || null;
+    console.log('NOW EDITING ENTRY:', Blog.nowEditing.entry_id);
   });
 
   $scope.blogEditInput = {}; 
   $scope.blogEditInput.input = "THIS IS TEST INPUT FOR " + Blog.nowEditing.display;
 
   $scope.$watch('nowEditing.display', function(newVal, oldVal, scope){
-    
-      var match = _.find(entries, function(entry){
-        console.log(entry.song_id, Blog.nowEditing.id)
-        return entry.song_id === Blog.nowEditing.id
-      });
+    var entry = _.find($scope.entries, function(entry){
+      return entry.id === Blog.nowEditing.entry_id
+    });
 
-      if (match) {
-        scope.blogEditInput.input = match.body;          
-      } else {
-        scope.blogEditInput.input = "I have something to say about " + newVal + "."
-      }
+    if (entry) {
+      scope.blogEditInput.input = entry.body;
+      scope.blogEditInput.entry_id = entry.id;       
+    } else {
+      scope.blogEditInput.input = "I have something to say about " + newVal + "."
+    }
 
   });
 
@@ -49,14 +47,45 @@ angular.module('switchr')
   };
 
   $scope.submitForm = function(){
+    console.log('ENTRIES', $scope.entries)
+    console.log('NOW EDITING', Blog.nowEditing)
+    $scope.submitText = "Saving...";
+    
+    var method = Blog.nowEditing.entry_id ? 'patch' : 'post';
+    var oneOrAll = Blog.nowEditing.entry_id ? 'one' : 'all';
+    
     Restangular
     .one("users", UserService.currentUser.id())
-    .all("entries").post({
+    [oneOrAll]("entries", $scope.blogEditInput.entry_id)
+    [method]({
       title: Blog.nowEditing.display, 
       body: $scope.blogEditInput.input,
-      user_id: UserService.currentUser.id(),
-      song_id: Blog.nowEditing.id,
-      playlist_id: Blog.nowEditing.playListId
-    });
+      users_id: UserService.currentUser.id(),
+      songs_id: Blog.nowEditing.id,
+      playlists_id: Blog.nowEditing.playListId
+    })
+    .then(
+    function(){ 
+      $modal.open({
+        templateUrl: 'partials/modal.html',
+        controller: 'ModalInstanceCtrl'
+      })
+      .result.then(function () {
+        $scope.submitText = "Submit";
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    }, 
+    function(){ $scope.submitText = "Error!"});
   }
-}]);
+}])
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
+
+  $scope.ok = function () {
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});

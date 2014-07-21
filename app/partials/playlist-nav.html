@@ -1,13 +1,13 @@
-<div class="userImage-container text-center fade-in" ng-if="!loading" ng-animate-children>
+<div class="userImage-container text-center fade-in" ng-show="!$root.loading" ng-animate-children>
   <img class="userImage fade-in" ng-if="userImage.url" ng-src="{{ userImage.url }}">
 </div>
 <div ng-hide="active" class="fade-in" ng-if="!loading" ng-animate-children>
-  <h6 class="ng-cloak" ng-cloak>{{ $root.currentUser.name }}'s Playlists</h6>
+  <h6 class="ng-cloak" ng-cloak>{{ currentUser.name }}'s Playlists</h6>
   <accordion close-others="true" ng-repeat="playlist in playlists">
     <accordion-group heading="{{playlist.name}}" is-open="false" class="fade-in" ng-if="true" ng-animate-children>
       <img class="playlist_image" src='https://partner.api.beatsmusic.com/v1/api/playlists/{{ playlist.id }}/images/default?client_id=eunjtjg4755smmz8q942e9kp'>
       <ul class="no-bullet playlist-item" ng-repeat="track in playlist.refs.tracks">
-        <a href="#"><li class="track_info_container {{ nowEditing.id === track.id && lastIndex === this.$index ? 'currentTrack' : '' }}" data-track-id="{{ track.id }}" data-track-name="{{ track.display }}" ng-click="edit(track.id, track.display, this.$index, playlist.$index)"><img class="track_image" src='https://partner.api.beatsmusic.com/v1/api/tracks/{{ track.id }}/images/default?client_id=eunjtjg4755smmz8q942e9kp'>{{ track.display }}</li></a>
+        <a href="#"><li class="track_info_container {{ nowEditing.id === track.id && lastIndex === this.$index ? 'currentTrack' : '' }}" data-playlist-id="{{ playlist.id }}" data-track-id="{{ track.id }}" data-track-name="{{ track.display }}" ng-click="edit(track.id, track.display, this.$index, playlist.id)"><img class="track_image" src='https://partner.api.beatsmusic.com/v1/api/tracks/{{ track.id }}/images/default?client_id=eunjtjg4755smmz8q942e9kp'>{{ track.display }}</li></a>
       </ul>
     </accordion-group>
   </accordion>

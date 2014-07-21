@@ -108,7 +108,7 @@ app.post('/api/v1/sync', function(req, res){
           var params =  {
                           id : playlist.id,
                           name: playlist.name,
-                          user_id: playlist.refs.author.id
+                          users_id: playlist.refs.author.id
                         };
 
           Playlist.save(params, { method: 'insert' }).then(function(db_response){
@@ -157,7 +157,11 @@ app.get('/api/v1/:model/:id', function(req,res){
 app.get('/api/v1/:model/:id/entries', function(req,res){
   console.log(req.params);
   var model = new db['entries']();
-  model.where({ user_id : req.params.id }).fetchAll().then(function(data){
+  
+  var params = {};
+  params[req.params.model + '_id'] = req.params.id;
+  
+  model.where(params).fetchAll().then(function(data){
     res.json(data);
   })
 });
@@ -165,6 +169,13 @@ app.post('/api/v1/:model/:id/entries', function(req,res){
   console.log(req.body, req.query);
   var model = new db['entries']();
   model.save(req.body ,{ method: 'insert'} ).then(function(db_response){
+    res.send(db_response)
+  });
+});
+app.patch('/api/v1/:model/:id/entries/:entry_id', function(req,res){
+  console.log(req.body, req.query);
+  var model = new db['entries']();
+  model.where({ id: req.params.entry_id }).save(req.body ,{ method: 'update'} ).then(function(db_response){
     res.send(db_response)
   });
 });

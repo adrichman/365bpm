@@ -10,6 +10,8 @@
     font-style: normal;
 
 }
+$black-background: #111111 !important;
+
 html, body {
   height: 100%;
   overflow-x: hidden;
@@ -31,7 +33,7 @@ body {
   background-position-y: 50px;
   background-size: auto 1000px;
   background-repeat: no-repeat;
-  background-color: #111111;
+  background-color: $black-background;
 }
 main {
   position: absolute;
@@ -69,7 +71,7 @@ blog {
   background-color: scale-color($primary-color, $lightness: -10%);
   padding: 0 15px;
   border-radius: 10px;
-  text-shadow: 2px 2px 3px black;
+  text-shadow: 2px 2px 1px black;
 }
 
 .playlist-item { 
@@ -245,4 +247,44 @@ a li.track_info_container {
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
+}
+
+.reveal-modal {
+  -webkit-animation: slide_down 0.2s linear; /* Safari/Chrome */
+  animation: slide_down 0.2s linear; /* IE10+ and Future Browsers */
+  width: 25%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 10px !important;
+  background-color: $black-background;
+  text-align: center;
+  &:focus {
+    outline: 0;
+  }
+  button {
+    &:focus {
+      outline: 0;
+    }
+    &:active {
+      background-color: scale-color($primary-color, $lightness: -20%);
+    }
+    &:hover {
+      background-color: scale-color($primary-color, $lightness: 20%);
+    }
+  }
+}
+
+.reveal-modal:focus {
+  outline: none;
+}
+
+@-webkit-keyframes slide_down {
+  from { Top:0; }
+  to { Top: 6.25rem; }
+}
+@keyframes slide_down {
+  from { Top:0; }
+  to { Top: 6.25rem; }
 }

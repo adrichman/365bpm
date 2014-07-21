@@ -28,7 +28,6 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('songs', function(t){
       t.string('id').primary();
       t.string('title');
-      // t.string('artist_id').references('id').inTable('artists');
     }),
     
     knex.schema.createTable('artists_songs', function(t){
@@ -38,9 +37,10 @@ exports.up = function(knex, Promise) {
     }),
 
     knex.schema.createTable('entries', function(t){
-      t.string('id').primary();
+      t.increments('id').primary();
       t.string('title');
-      t.string('body');
+      t.text('body', 'longtext');
+      t.string('user_id').references('id').inTable('users');
       t.string('song_id').references('id').inTable('songs');
       t.string('playlist_id').references('id').inTable('playlists');
       t.timestamps();

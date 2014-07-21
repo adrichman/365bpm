@@ -2,10 +2,10 @@
   <div class="large-12 columns">
   <h3> Blog some stuff about <span class="song-heading">{{ nowEditing.display || 'a song from your playlists' }}{{nowEditing.display && nowEditing.display[nowEditing.display.length-1] === "." ? "" : "."}}</span></h3>
     <form class="blogForm" name="blogEditForm" ng-show="nowEditing.display" >
-      <textarea ui-tinymce="tinymceOptions" class="blogEditInput" name="blogEditInput" ng-model="blogEditInput"></textarea>
+      <textarea ui-tinymce="tinymceOptions" class="blogEditInput" name="blogEditInput" ng-model="blogEditInput.input"></textarea>
       <div class="buttons">
         <button>Cancel</button>
-        <button ng-disabled="!blogEditForm.blogEditInput.$dirty">Submit</button>
+        <button ng-disabled="!blogEditForm.blogEditInput.$dirty" ng-click="submitForm()">Submit</button>
       </div>
     </form>
   </div>

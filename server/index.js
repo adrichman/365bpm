@@ -2,7 +2,6 @@
 
 var express         = require('express'),
     request         = require('request'),
-    flash           = require('connect-flash'),
     cookieParser    = require('cookie-parser'),
     cookieSession   = require('cookie-session'),
     bodyParser      = require('body-parser'),
@@ -26,15 +25,8 @@ app.listen(port);
 console.log('Server listening on port: ' + port);
 
 //////////////////////////////////////////////
-// Fake DB                                  //
-//////////////////////////////////////////////
-// app.fakeDb = helpers.fakeDb;
-app.cookieSession = cookieSession;
-
-//////////////////////////////////////////////
 // express logging, content security policy //
 //////////////////////////////////////////////
-// app.use(morgan({ format: 'dev', immediate: true }));
 app.use(helpers.cors);
 app.use(helmet());
 
@@ -59,25 +51,8 @@ app.use(bodyParser.json());
 //////////////////////////////////////////////
 // app.use(csrf());
 // app.use(function(req, res, next){
-  // res.locals.token = req.session._csrf || req.csrfToken();
-  // next();
-// });
-//////////////////////////////////////////////
-// Error handling                           //
-//////////////////////////////////////////////
-// app.use(flash());
-// app.use(function(req, res, next) {
-//   res.locals.messages = req.session.messages
+//   res.locals.token = req.session._csrf || req.csrfToken();
 //   next();
-// })
-// app.use(function(err, req, res, next) {
-//     if(!err) { return next(); }
-    
-//     // log out users that have received an authentication error
-//     if (err.status === 403 && req.user) { 
-//       // app.fakeDb.users[req.user.id].loggedIn = false; 
-//     }
-//     // res.render('_error', { error : err });
 // });
 
 //////////////////////////////////////////////
@@ -100,89 +75,105 @@ app.post('/api/v1/sync', function(req, res){
   var userData = JSON.parse(req.query.userData);
   var playlists = req.query.playlists;
   if (userData.id !== undefined) {
-    var User = new db.User();
+    var User = new db.users();
     User.fetch({ id :userData.id })
     .then(function(data){
       if (!data) {
-        var params = {
-          id : userData.id,
-          name: userData['full_name'],
-          username: userData.username,
-          email: 'fake@fakehost.com',
-          last_login: new Date().toISOString(),
-          beats_token: currentUser.expires
-        };
+        var params =  {
+                        id : userData.id,
+                        name: userData['full_name'],
+                        username: userData.username,
+                        email: 'fake@fakehost.com',
+                        last_login: new Date().toISOString(),
+                        beats_token: currentUser.expires
+                      };
 
         User.save(params ,{ method: 'insert'} ).then(function(db_response){
-          console.log('db_response',arguments);
           res.send(db_response)
         });
-      }
-       else {
+      } else {
         res.send('got it already');
       }
     })
     .catch(function(){
       console.log('catch',arguments);
-      res.send(arguments);
     })
-    // .finally(function(){
-      var Playlist = new db.Playlist();
 
-      playlists.forEach(function(playlist){
-        Playlist.fetch({ id : playlist.id }).then(function(data){
-          playlist = JSON.parse(playlist);
-          if (!data){
-            var params = {
-              id : playlist.id,
-              name: playlist.name,
-              user_id: playlist.refs.author.id
-            };
-            Playlist.save(params, { method: 'insert' }).then(function(db_response){
-              console.log('db_playlist_response', db_response);
-            });
-          }
-          
-          var Song = new db.Song();
-          playlist.refs.tracks.forEach(function(track){
-            Song.fetch({ id : track.id }).then(function(data){
-              if (!data){
-                var params = {
-                  id : track.id,
-                  title : track.display
-                }
-                Song.save(params, { method: 'insert' }).then(function(db_response){
-                  console.log('db_song_response', db_response);
-                });
-              }
-            })
+    var Playlist = new db.playlists();
+
+    playlists.forEach(function(playlist){
+      playlist = JSON.parse(playlist);
+      Playlist.fetch({ id : playlist.id }).then(function(data){
+        if (!data){
+          var params =  {
+                          id : playlist.id,
+                          name: playlist.name,
+                          user_id: playlist.refs.author.id
+                        };
+
+          Playlist.save(params, { method: 'insert' }).then(function(db_response){
+            console.log('db_playlist_response', db_response);
+          });
+        }
+        
+        var Song = new db.songs();
+        playlist.refs.tracks.forEach(function(track){
+          Song.fetch({ id : track.id }).then(function(data){
+            if (!data){
+              var params =  {
+                              id : track.id,
+                              title : track.display
+                            };
+
+              Song.save(params, { method: 'insert' }).then(function(db_response){
+                console.log('db_song_response', db_response);
+              });
+            }
           })
         })
-        .catch(function(){
-          console.log('catch',arguments);
-        })
       })
-    // })
+      .catch(function(){
+        console.log('catch',arguments);
+      })
+    })
   }
 });
 
+app.get('/api/v1/:model', function(req,res){
+  console.log(req.query);
+  var model = new db[req.params.model.toLowerCase()]();
+  model.fetchAll().then(function(data){
+    console.log(data.models);
+    res.json(data.models);
+  })
+});
 app.get('/api/v1/:model/:id', function(req,res){
-
-  if (req.params.id !== undefined) {
-    var model = new Model(req.params.model);
-
-    model.fetch(req.params.id).then(function(data){
-      res.json(data);
-    })
-
-  } else if (req.params.model){
-    
-    db[req.params.model].fetchAll().then(function(data){
-      console.log(data.models);
-      res.json(data.models);
-    })
-
-  }
+  console.log(req.params);
+  var model = new db[req.params.model.toLowerCase()]();
+  model.where({ id : req.params.id }).fetch().then(function(data){
+    res.json(data);
+  })
+});
+app.get('/api/v1/:model/:id/entries', function(req,res){
+  console.log(req.params);
+  var model = new db['entries']();
+  model.where({ user_id : req.params.id }).fetchAll().then(function(data){
+    res.json(data);
+  })
+});
+app.post('/api/v1/:model/:id/entries', function(req,res){
+  console.log(req.body, req.query);
+  var model = new db['entries']();
+  model.save(req.body ,{ method: 'insert'} ).then(function(db_response){
+    res.send(db_response)
+  });
+});
+app.get('/api/v1/:model/:id/entries/:entry_id', function(req,res){
+  console.log(req.body);
+  var model = new db['entries']();
+  model.fetch({ id : req.body.entry_id }).then(function(data){
+    res.json(data);
+  })
 });
 
 app.get('/beats', function(req, res){

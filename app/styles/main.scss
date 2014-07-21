@@ -29,9 +29,9 @@ body h6 {
 body { 
   background: url('https://developer.beatsmusic.com/files/hero-home-new.jpg');
   background-position-y: 50px;
-  background-size: 2000px 585px;
+  background-size: auto 1000px;
   background-repeat: no-repeat;
-  background-color: #131313;
+  background-color: #111111;
 }
 main {
   position: absolute;
@@ -67,7 +67,7 @@ blog {
   font-size: 1em;
   color: #eee;
   background-color: scale-color($primary-color, $lightness: -10%);
-  padding: 0 5px;
+  padding: 0 15px;
   border-radius: 10px;
   text-shadow: 2px 2px 3px black;
 }
@@ -123,10 +123,6 @@ div.contain-to-grid.sticky.ng-scope {
 .beats-button {
   margin-top: 50px;
   
-}
-
-.ng-cloak {
-  display: none !important;
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -245,4 +241,8 @@ a li.track_info_container {
 @keyframes enter_sequence {
   from { opacity:0; }
   to { opacity:1; }
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
 }

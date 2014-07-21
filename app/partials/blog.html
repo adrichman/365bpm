@@ -1,6 +1,6 @@
 <div class="row blog_view fade-in" ng-if="true" ng-animate-children>
   <div class="large-12 columns">
-  <h3> Blog some stuff about <span class="song-heading">{{ nowEditing.display || 'a song from your playlists' }}.</span></h3>
+  <h3> Blog some stuff about <span class="song-heading">{{ nowEditing.display || 'a song from your playlists' }}{{nowEditing.display && nowEditing.display[nowEditing.display.length-1] === "." ? "" : "."}}</span></h3>
     <form class="blogForm" name="blogEditForm" ng-show="nowEditing.display" >
       <textarea ui-tinymce="tinymceOptions" class="blogEditInput" name="blogEditInput" ng-model="blogEditInput"></textarea>
       <div class="buttons">

@@ -14,6 +14,7 @@ angular.module('switchr')
   $rootScope.currentUser.user = $window.localStorage['beats_user'] || null;
    $scope.tinymceOptions = {
         theme: "modern",
+        skin: "light",
         plugins: [
             "advlist autolink lists link image charmap print preview hr anchor pagebreak",
             "searchreplace visualblocks visualchars code fullscreen",
@@ -23,7 +24,7 @@ angular.module('switchr')
         toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
         toolbar2: "print preview media | forecolor backcolor emoticons",
         image_advtab: true,
-        height: "500px",
+        height: "300px",
         width: "650px"
     };
 }]);

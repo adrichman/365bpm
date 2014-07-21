@@ -5438,6 +5438,9 @@ body h6 {
 
 body {
   background: url("https://developer.beatsmusic.com/files/hero-home-new.jpg");
+  background-position-y: 50px;
+  background-size: 2000px 585px;
+  background-repeat: no-repeat;
   background-color: #131313; }
 
 main {
@@ -5468,10 +5471,10 @@ blog {
   height: 1.4em;
   font-size: 1em;
   color: #eee;
-  background-color: #d50211;
-  padding: 0 8px;
+  background-color: #c0020f;
+  padding: 0 5px;
   border-radius: 10px;
-  text-shadow: 1px 1px 2px black; }
+  text-shadow: 2px 2px 3px black; }
 
 .playlist-item {
   font-size: .75em;
@@ -5535,12 +5538,13 @@ img.playlist_image {
   overflow-wrap: false; }
 
 .userImage {
-  height: 100px;
+  height: 100%;
   width: 100px;
   border-radius: 50px;
   border: 2px solid black; }
 
 .userImage-container {
+  height: 100px;
   margin: 10px; }
 
 h2.blog-nav-heading {
@@ -5559,7 +5563,7 @@ h2.blog-nav-heading {
   margin: 0 auto; }
 
 .blogForm {
-  .height: 300px; }
+  margin-top: 40px; }
   .blogForm .buttons {
     text-align: right;
     margin: 10px 0; }

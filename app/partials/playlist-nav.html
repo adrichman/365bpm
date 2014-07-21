@@ -1,5 +1,5 @@
 <div class="userImage-container text-center fade-in" ng-if="true" ng-animate-children>
-  <img class="userImage fade-in" ng-src="{{ userImage.url }}">
+  <img class="userImage fade-in" ng-if="userImage.url" ng-src="{{ userImage.url }}">
 </div>
 <div ng-hide="active" class="fade-in" ng-if="true" ng-animate-children>
   <h6>{{token}}'s Playlists</h6>

@@ -10,9 +10,10 @@ angular.module('switchr')
   $rootScope.currentUser.user = $window.localStorage['beats_user'] || null ;
   $rootScope.currentUser = {};
   $rootScope.logout = function(){
-    $rootScope.currentUser.user = null;
-    $window.localStorage['beats_token'] = null;
-    $window.localStorage['beats_user'] = null;
-    $state.go('login');
+    delete $rootScope.currentUser.user;
+    delete $window.localStorage['beats_token'];
+    delete $window.localStorage['beats_user'];
+    $state.go('main.login');
   }
-}]);
+  console.log('in here');
+}])

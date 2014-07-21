@@ -5,7 +5,7 @@ angular.module('switchr')
   $scope.userImage = {};
   $scope.nowEditing = Blog.nowEditing;
   $scope.lastIndex = -1;
-  
+
   if ($stateParams['access_token']) $window.localStorage['beats_token'] = $stateParams['access_token'];
 
   $scope.token = $window.localStorage['beats_user'] || null;
@@ -24,7 +24,7 @@ angular.module('switchr')
     });
   }
 })
-.directive('blog', function(){
+.directive('blog', function($window){
   return {
     restrict: 'E',
     transclude: true,

@@ -40,7 +40,7 @@ body {
 
 body {
   background: white;
-  color: #222222;
+  color: #cacaca;
   padding: 0;
   margin: 0;
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
@@ -3955,14 +3955,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
-  color: #222222;
+  color: #cacaca;
   text-rendering: optimizeLegibility;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem;
   line-height: 1.4; }
   h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
     font-size: 60%;
-    color: #6f6f6f;
+    color: #dddddd;
     line-height: 0; }
 
 h1 {
@@ -3985,7 +3985,7 @@ h6 {
 
 .subheader {
   line-height: 1.4;
-  color: #6f6f6f;
+  color: #dddddd;
   font-weight: normal;
   margin-top: 0.2rem;
   margin-bottom: 0.5rem; }
@@ -4076,7 +4076,7 @@ abbr,
 acronym {
   text-transform: uppercase;
   font-size: 90%;
-  color: #222222;
+  color: #cacaca;
   border-bottom: 1px dotted #dddddd;
   cursor: help; }
 
@@ -4091,17 +4091,17 @@ blockquote {
   blockquote cite {
     display: block;
     font-size: 0.8125rem;
-    color: #555555; }
+    color: #d6d6d6; }
     blockquote cite:before {
       content: "\2014 \0020"; }
     blockquote cite a,
     blockquote cite a:visited {
-      color: #555555; }
+      color: #d6d6d6; }
 
 blockquote,
 blockquote p {
   line-height: 1.6;
-  color: #6f6f6f; }
+  color: #dddddd; }
 
 /* Microformats */
 .vcard {
@@ -4386,7 +4386,7 @@ meta.foundation-mq-topbar {
 /* Wrapped around .top-bar to contain to grid width */
 .contain-to-grid {
   width: 100%;
-  background: #333333; }
+  background: #141414; }
   .contain-to-grid .top-bar {
     margin-bottom: 0; }
 
@@ -4414,7 +4414,7 @@ meta.foundation-mq-topbar {
   height: 45px;
   line-height: 45px;
   position: relative;
-  background: #333333;
+  background: #141414;
   margin-bottom: 0; }
   .top-bar ul {
     margin-bottom: 0;
@@ -4443,7 +4443,7 @@ meta.foundation-mq-topbar {
     font-size: 16px; }
     .top-bar .name h1 {
       line-height: 45px;
-      font-size: 1.0625rem;
+      font-size: 1.6875rem;
       margin: 0; }
       .top-bar .name h1 a {
         font-weight: normal;
@@ -4490,7 +4490,7 @@ meta.foundation-mq-topbar {
     height: auto;
     background: transparent; }
     .top-bar.expanded .title-area {
-      background: #333333; }
+      background: #141414; }
     .top-bar.expanded .toggle-topbar a {
       color: #888888; }
       .top-bar.expanded .toggle-topbar a::after {
@@ -4510,7 +4510,7 @@ meta.foundation-mq-topbar {
     margin: 0; }
   .top-bar-section .divider,
   .top-bar-section [role="separator"] {
-    border-top: solid 1px #1a1a1a;
+    border-top: solid 1px #0a0a0a;
     clear: both;
     height: 1px;
     width: 100%; }
@@ -4597,14 +4597,14 @@ meta.foundation-mq-topbar {
         .top-bar-section ul li > button.alert:hover, .top-bar-section ul li > button.alert:focus {
           color: white; }
     .top-bar-section ul li:hover:not(.has-form) > a {
-      background-color: #555555;
-      background: #272727;
+      background-color: #a0010d;
+      background: #a0010d;
       color: white; }
     .top-bar-section ul li.active > a {
       background: #d50211;
       color: white; }
       .top-bar-section ul li.active > a:hover {
-        background: #b7020f;
+        background: #a0010d;
         color: white; }
   .top-bar-section .has-form {
     padding: 15px; }
@@ -4680,7 +4680,7 @@ meta.foundation-mq-topbar {
 
 @media only screen and (min-width: 40.063em) {
   .top-bar {
-    background: #333333;
+    background: #141414;
     overflow: visible; }
     .top-bar:before, .top-bar:after {
       content: " ";
@@ -4700,7 +4700,7 @@ meta.foundation-mq-topbar {
       position: relative;
       top: 7px; }
     .top-bar.expanded {
-      background: #333333; }
+      background: #141414; }
 
   .contain-to-grid .top-bar {
     max-width: 62.5rem;
@@ -4719,23 +4719,23 @@ meta.foundation-mq-topbar {
         .top-bar-section ul li .js-generated {
           display: none; }
     .top-bar-section li.hover > a:not(.button) {
-      background-color: #555555;
-      background: #272727;
+      background-color: #a0010d;
+      background: #a0010d;
       color: white; }
     .top-bar-section li:not(.has-form) a:not(.button) {
       padding: 0 15px;
       line-height: 45px;
-      background: #333333; }
+      background: #141414; }
       .top-bar-section li:not(.has-form) a:not(.button):hover {
-        background-color: #555555;
-        background: #272727; }
+        background-color: #a0010d;
+        background: #a0010d; }
     .top-bar-section li.active:not(.has-form) a:not(.button) {
       padding: 0 15px;
       line-height: 45px;
       color: white;
       background: #d50211; }
       .top-bar-section li.active:not(.has-form) a:not(.button):hover {
-        background: #b7020f; }
+        background: #a0010d; }
     .top-bar-section .has-dropdown > a {
       padding-right: 35px !important; }
       .top-bar-section .has-dropdown > a:after {
@@ -4788,8 +4788,8 @@ meta.foundation-mq-topbar {
         background: #333333; }
       .top-bar-section .dropdown li:not(.has-form):hover > a:not(.button) {
         color: white;
-        background-color: #555555;
-        background: #272727; }
+        background-color: #a0010d;
+        background: #a0010d; }
       .top-bar-section .dropdown li label {
         white-space: nowrap;
         background: #333333; }
@@ -4799,12 +4799,12 @@ meta.foundation-mq-topbar {
     .top-bar-section > ul > .divider, .top-bar-section > ul > [role="separator"] {
       border-bottom: none;
       border-top: none;
-      border-right: solid 1px #4e4e4e;
+      border-right: solid 1px #333333;
       clear: none;
       height: 45px;
       width: 0; }
     .top-bar-section .has-form {
-      background: #333333;
+      background: #141414;
       padding: 0 15px;
       height: 45px; }
     .top-bar-section .right li .dropdown {
@@ -4819,8 +4819,8 @@ meta.foundation-mq-topbar {
         left: 100%; }
 
   .no-js .top-bar-section ul li:hover > a {
-    background-color: #555555;
-    background: #272727;
+    background-color: #a0010d;
+    background: #a0010d;
     color: white; }
   .no-js .top-bar-section ul li:active > a {
     background: #d50211;
@@ -5422,27 +5422,72 @@ th.hide-for-touch {
   src: url("../fonts/Code_Pro_Demo-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/Code_Pro_Demo-webfont.woff") format("woff"), url("../fonts/Code_Pro_Demo-webfont.ttf") format("truetype");
   font-weight: normal;
   font-style: normal; }
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
 body h1 {
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-size: 8em;
   font-weight: 600;
   margin-bottom: -40px; }
 
+body h6 {
+  margin-bottom: 0; }
+
 body {
-  background: #E9EAEC; }
+  background: url("https://developer.beatsmusic.com/files/hero-home-new.jpg");
+  background-color: #131313; }
+
+main {
+  position: absolute;
+  width: 100%;
+  top: 50px; }
+
+top-nav-bar {
+  position: fixed;
+  width: 100%;
+  height: 50px;
+  z-index: 1; }
+
+blog {
+  overflow-y: hidden;
+  position: fixed; }
+
+.playlist-col {
+  overflow-y: scroll; }
+  .playlist-col h6 {
+    text-align: center; }
+
+.mce-path-item {
+  display: none !important; }
+
+.song-heading {
+  display: inline-block;
+  height: 1.4em;
+  font-size: 1em;
+  color: #eee;
+  background-color: #d50211;
+  padding: 0 8px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 2px black; }
 
 .playlist-item {
   font-size: .75em;
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  background: #EBEBEB;
-  padding: 5px;
-  border: 2px solid white;
-  margin: 3px; }
+  background: #A0A0A0;
+  margin: 1px; }
+
+.playlist_image {
+  border-radius: 4px;
+  border: 1px solid black;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box; }
 
 .browsehappy {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  color: #cacaca;
   padding: 0.2em 0; }
 
 .panel {
@@ -5453,6 +5498,9 @@ body {
   height: 200px; }
   .th img.right {
     width: 50px; }
+
+div.contain-to-grid.sticky.ng-scope {
+  border-bottom: 1px solid white; }
 
 .top-bar {
   color: #BBB9B9;
@@ -5472,6 +5520,11 @@ body {
 
 .accordion dd {
   margin: 10px 0; }
+  .accordion dd .content {
+    padding: 0.45rem; }
+
+img.playlist_image {
+  width: 100%; }
 
 .accordion dd > a {
   padding: 2px 8px;
@@ -5484,7 +5537,7 @@ body {
 .userImage {
   height: 100px;
   width: 100px;
-  border-radius: 100px;
+  border-radius: 50px;
   border: 2px solid black; }
 
 .userImage-container {
@@ -5505,11 +5558,13 @@ h2.blog-nav-heading {
   display: table;
   margin: 0 auto; }
 
-.blogForm .buttons {
-  text-align: right;
-  margin: 10px 0; }
-  .blogForm .buttons button {
-    border-radius: 4px; }
+.blogForm {
+  .height: 300px; }
+  .blogForm .buttons {
+    text-align: right;
+    margin: 10px 0; }
+    .blogForm .buttons button {
+      border-radius: 4px; }
 
 .blogEditInput {
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -5517,8 +5572,8 @@ h2.blog-nav-heading {
   width: 100%;
   border: 1px solid black; }
 
-#mce_13-body button {
-  background: transparent; }
+.mce-container-body .mce-stack-layout button, .mce-btn.mce-menubtn button {
+  background: transparent !important; }
 
 a li.track_info_container {
   color: #222; }
@@ -5526,10 +5581,6 @@ a li.track_info_container {
     background: white; }
   a li.track_info_container.currentTrack {
     background: white; }
-
-.playlist_image {
-  border-radius: 4px;
-  border: 2px solid white; }
 
 .track_image {
   width: 30px;

@@ -30,6 +30,11 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
       templateUrl: 'partials/login.html',
       controller: 'LoginController'
     })
+    .state('user', {
+      url: '/users/:userid',
+      templateUrl: 'partials/user.html',
+      controller: 'UserController'
+    })
   $urlRouterProvider.otherwise('/');
   $locationProvider.html5Mode(true);
 
@@ -160,4 +165,11 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
             }
   }
 }])
-
+.directive('topNavBar', function(){
+  return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: '/partials/top-nav.html',
+    controller: 'TopNavController'
+  }
+});

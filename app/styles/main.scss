@@ -10,6 +10,11 @@
     font-style: normal;
 
 }
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 
 body h1 {
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -17,27 +22,73 @@ body h1 {
   font-weight: 600;
   margin-bottom: -40px; 
 }
+body h6 {
+  margin-bottom: 0;
+}
 
 body { 
-  // font-family: "CodeProDemoRegular", Arial, "Lucida Grande", sans-serif;
-  background: #E9EAEC;
-  // background-image: url('/images/squared_metal.png');
+  background: url('https://developer.beatsmusic.com/files/hero-home-new.jpg');
+  background-color: #131313;
+}
+main {
+  position: absolute;
+  width: 100%;
+  top:50px;
+}
+top-nav-bar {
+  position:fixed;
+  width: 100%;
+  height: 50px;
+  z-index:1;
+}
+
+blog {
+  overflow-y: hidden;
+  position: fixed;
+}
+
+.playlist-col {
+  overflow-y: scroll;
+  h6 {
+    text-align: center;
+  }
+}
+
+.mce-path-item {
+  display: none !important;
+}
+
+.song-heading {
+  display: inline-block;
+  height: 1.4em;
+  font-size: 1em;
+  color: #eee;
+  background-color: $primary-color;
+  padding: 0 8px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 2px black;
 }
 
 .playlist-item { 
   font-size: .75em;
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
-  background: #EBEBEB;
-  padding: 5px;
-  border: 2px solid white;
+  background: #A0A0A0;
+  // padding: 5px;
+  // border: 2px solid white;
   // border-radius: 0 10px 10px 0;
-  margin: 3px;
+  margin: 1px;
 }
 
+.playlist_image {
+  border-radius: 4px;
+  border: 1px solid black;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+}
 .browsehappy {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  // background: #ccc;
+  color: $body-font-color;
   padding: 0.2em 0;
 }
 
@@ -52,6 +103,10 @@ body {
   img.right {
     width: 50px;
   }
+}
+
+div.contain-to-grid.sticky.ng-scope {
+  border-bottom: 1px solid white;
 }
 
 .top-bar {
@@ -75,6 +130,13 @@ body {
 
 .accordion dd {
   margin:10px 0;
+  .content {
+    padding: 0.45rem;
+  }
+}
+
+img.playlist_image {  
+  width: 100%;
 }
 
 .accordion dd > a {
@@ -89,11 +151,13 @@ body {
 .userImage {
   height:100px;
   width: 100px;
-  border-radius: 100px;
+  border-radius: 50px;
   border: 2px solid black;
 }
 
 .userImage-container {
+  // background-clip: padding-box;
+  // -webkit-background-clip: padding-box;
   margin:10px;
 }
 
@@ -117,6 +181,7 @@ h2.blog-nav-heading {
 }
 
 .blogForm {
+  .height: 300px;
   .buttons {
     text-align: right;
     margin: 10px 0;
@@ -132,8 +197,8 @@ h2.blog-nav-heading {
   border: 1px solid black;
 }
 
-#mce_13-body button {
-  background: transparent;
+.mce-container-body .mce-stack-layout button, .mce-btn.mce-menubtn button {
+  background: transparent !important;
 }
 
 a li.track_info_container {
@@ -148,10 +213,6 @@ a li.track_info_container {
   }
 }
 
-.playlist_image {
-  border-radius: 4px;
-  border: 2px solid white;
-}
 .track_image {
   width:30px;
   height: 30px;

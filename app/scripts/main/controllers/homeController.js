@@ -5,18 +5,15 @@ angular.module('switchr')
   $rootScope.loading = loading;
   $scope.edit = edit;
   
-  if ('STATE PARAMS', $stateParams.id) {
-    console.log($stateParams)
+  if ($stateParams.id) {
     $scope.currentUser.id = $stateParams.id;
   }
 
   $scope.currentUser.token = UserService.currentUser.token() || null;
   $scope.$watch('currentUser', function(newVal, oldVal){
-    console.log('current user watch in home', arguments)
     $scope.currentUser = newVal;
   })
   $rootScope.$watch('loading', function(newVal, oldVal){
-    console.log('LOADING watch in home', arguments)
     $rootScope.loading = newVal;
   })
 

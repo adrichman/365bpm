@@ -10,6 +10,7 @@
     font-style: normal;
 
 }
+
 $black-background: #111111 !important;
 
 html, body {
@@ -118,9 +119,6 @@ div.users-home {
   font-size: .75em;
   font-family: "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
   background: #A0A0A0;
-  // padding: 5px;
-  // border: 2px solid white;
-  // border-radius: 0 10px 10px 0;
   margin: 1px;
 }
 
@@ -164,7 +162,6 @@ div.contain-to-grid.sticky.ng-scope {
 
 .beats-button {
   margin-top: 50px;
-  
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
@@ -197,8 +194,6 @@ img.playlist_image {
 }
 
 .userImage-container {
-  // background-clip: padding-box;
-  // -webkit-background-clip: padding-box;
   height:100px;
   margin:10px;
 }
@@ -210,7 +205,6 @@ h2.blog-nav-heading {
   font-weight: 600;
   margin-bottom: 20px;
 }
-
 
 .blog-nav.button {
   border-radius: 4px;
@@ -326,20 +320,6 @@ div.blog-entry-content {
   margin: 20px;
 }
 
-.fade-in.ng-enter {
-  -webkit-animation: enter_sequence 0.2s linear; /* Safari/Chrome */
-  animation: enter_sequence 0.2s linear; /* IE10+ and Future Browsers */
-}
-
-@-webkit-keyframes enter_sequence {
-  from { opacity:0; }
-  to { opacity:1; }
-}
-@keyframes enter_sequence {
-  from { opacity:0; }
-  to { opacity:1; }
-}
-
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
@@ -373,6 +353,20 @@ div.blog-entry-content {
 
 .reveal-modal:focus {
   outline: none;
+}
+
+.fade-in.ng-enter {
+  -webkit-animation: enter_sequence 0.2s linear; /* Safari/Chrome */
+  animation: enter_sequence 0.2s linear; /* IE10+ and Future Browsers */
+}
+
+@-webkit-keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
+}
+@keyframes enter_sequence {
+  from { opacity:0; }
+  to { opacity:1; }
 }
 
 @-webkit-keyframes slide_down {

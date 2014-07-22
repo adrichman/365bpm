@@ -5666,24 +5666,6 @@ div.blog-entry-content {
 .row .blog_view {
   margin: 20px; }
 
-.fade-in.ng-enter {
-  -webkit-animation: enter_sequence 0.2s linear;
-  /* Safari/Chrome */
-  animation: enter_sequence 0.2s linear;
-  /* IE10+ and Future Browsers */ }
-
-@-webkit-keyframes enter_sequence {
-  from {
-    opacity: 0; }
-
-  to {
-    opacity: 1; } }
-@keyframes enter_sequence {
-  from {
-    opacity: 0; }
-
-  to {
-    opacity: 1; } }
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important; }
 
@@ -5712,6 +5694,24 @@ div.blog-entry-content {
 .reveal-modal:focus {
   outline: none; }
 
+.fade-in.ng-enter {
+  -webkit-animation: enter_sequence 0.2s linear;
+  /* Safari/Chrome */
+  animation: enter_sequence 0.2s linear;
+  /* IE10+ and Future Browsers */ }
+
+@-webkit-keyframes enter_sequence {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
+@keyframes enter_sequence {
+  from {
+    opacity: 0; }
+
+  to {
+    opacity: 1; } }
 @-webkit-keyframes slide_down {
   from {
     Top: 0; }

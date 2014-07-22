@@ -4,6 +4,7 @@ angular.module('switchr')
 .controller('EditBlogController', ['$state','$scope','$stateParams', '$rootScope', 'Blog','UserService','Restangular','$modal', '$sanitize', function ($state, $scope, $stateParams, $rootScope, Blog, UserService, Restangular, $modal, $sanitize) {
   $scope.submitText = "Submit";
   $scope.entries = UserService.currentUser.entries;
+  $scope.nowEditing = {};
   $scope.nowEditing.display = "";
   
   $scope.$on('playlistSelect', function(e, data){
@@ -54,45 +55,33 @@ angular.module('switchr')
   };
 
   $scope.submitForm = function(){
-    console.log('ENTRIES', $scope.entries)
-    console.log('NOW EDITING', Blog.nowEditing)
     $scope.submitText = "Saving...";
     
-    var method = Blog.nowEditing.entry_id ? 'patch' : 'post';
+    var method   = Blog.nowEditing.entry_id ? 'patch' : 'post';
     var oneOrAll = Blog.nowEditing.entry_id ? 'one' : 'all';
     
-    Restangular
-    .one("users", UserService.currentUser.id())
+    Restangular.one("users", UserService.currentUser.id())
+    // dynamic method call
     [oneOrAll]("entries", $scope.blogEditInput.entry_id)
+    // dynamic method call
     [method]({
-      title: Blog.nowEditing.display, 
-      body: $sanitize($scope.blogEditInput.input),
-      users_id: UserService.currentUser.id(),
-      songs_id: Blog.nowEditing.id,
-      playlists_id: Blog.nowEditing.playListId
+      title        : Blog.nowEditing.display, 
+      body         : $sanitize($scope.blogEditInput.input),
+      users_id     : UserService.currentUser.id(),
+      songs_id     : Blog.nowEditing.id,
+      playlists_id : Blog.nowEditing.playListId
     })
     .then(
-    function(){ 
-      $modal.open({
-        templateUrl: 'partials/modal.html',
-        controller: 'ModalInstanceCtrl'
-      })
-      .result.then(function () {
-        $scope.submitText = "Submit";
-      }, function () {
-        console.log('Modal dismissed at: ' + new Date());
-      });
-    }, 
-    function(){ $scope.submitText = "Error!"});
+      function(){ 
+        $modal.open({
+          templateUrl: 'partials/modal.html',
+          controller: 'ModalInstanceController'
+        })
+        .result.then(
+          function() {  $scope.submitText = "Submit" }, 
+          function () { console.log('Modal dismissed at: ' + new Date()) });
+      }, 
+      function(){ $scope.submitText = "Error!"}
+    );
   }
 }])
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance) {
-
-  $scope.ok = function () {
-    $modalInstance.close();
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});

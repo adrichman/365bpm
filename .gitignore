@@ -1,5 +1,8 @@
 node_modules
 dist
+gulp
+spec
+test
 .tmp
 .sass-cache
 app/bower_components

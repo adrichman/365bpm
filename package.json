@@ -5,7 +5,8 @@
     "postinstall": "bower install"
   },
   "dependencies": {
-    "bower":"latest"
+    "bower":"latest",
+    "nodemon":"latest"
   },
   "devDependencies": {
     "gulp": "^3.6.0",

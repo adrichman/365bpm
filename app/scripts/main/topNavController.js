@@ -2,8 +2,7 @@
 
 angular.module('switchr')
 .controller('TopNavController', ['$window', '$state', '$scope', '$stateParams', '$timeout', '$rootScope', 'Restangular','UserService', function ($window, $state, $scope, $stateParams, $timeout, $rootScope, Restangular, UserService) {
-  $rootScope.currentUser.name = UserService.currentUser.name() || null ;
-  $rootScope.currentUser.token = UserService.currentUser.token() || null ;
-  $window.rest = Restangular;
+  $scope.currentUser.name = UserService.currentUser.name() || null ;
+  $scope.currentUser.token = UserService.currentUser.token() || null ;
   console.log('in here');
 }])

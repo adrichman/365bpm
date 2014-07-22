@@ -5582,6 +5582,52 @@ a li.track_info_container {
     background: white; }
   a li.track_info_container.currentTrack {
     background: white; }
+  a li.track_info_container.disable {
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: none; }
+
+a.noCursor {
+  cursor: default !important; }
+
+div.blog-entry-heading-container {
+  height: 16vh; }
+  div.blog-entry-heading-container .sub-heading {
+    display: inline-block;
+    float: right;
+    height: 3em;
+    background-color: #95010c;
+    border-radius: 10px;
+    padding: 0 2em;
+    z-index: -1;
+    margin-top: .9em;
+    margin-right: 1em; }
+    div.blog-entry-heading-container .sub-heading h3 {
+      display: block;
+      position: relative;
+      text-shadow: 2px 2px 1px black;
+      z-index: 1; }
+
+.entry_image {
+  float: left;
+  margin: 0 .7em;
+  border: 1px solid black; }
+
+h1.blog-entry-heading {
+  font-size: 7.5vh;
+  line-height: 6.2rem;
+  text-shadow: 2px 2px 2px black;
+  color: #faffbd; }
+
+div.blog-entry-content {
+  display: block;
+  margin: 0 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #CCCCCC;
+  color: black;
+  min-height: 16em; }
+  div.blog-entry-content p {
+    line-height: .1em; }
 
 .track_image {
   width: 30px;

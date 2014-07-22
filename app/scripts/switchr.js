@@ -9,7 +9,7 @@ var isLoggedIn = function($state, token){
   }
 }
 
-angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', 'mm.foundation', 'ngAnimate', 'ui.tinymce'])
+angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', 'mm.foundation', 'ngAnimate', 'ui.tinymce', 'ngSanitize'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
   RestangularProvider.setBaseUrl('http://www.fakehost.com:8000/api/v1');
 
@@ -50,23 +50,40 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
                       });
                     });
                     return deferred.promise;
+      },
+      edit : function($q, $stateParams, UserService){
+              var deferred = $q.defer();
+              if ($stateParams['access_token'] || UserService.currentUser.id()) {
+                deferred.resolve(true);
+              } else {
+                deferred.reject(false);
+              }
+              return deferred.promise;
+            }
+      },
+      
+    })
+    .state('users', {
+      url: '/users?id',
+      templateUrl: 'partials/users.html',
+      controller: 'UsersController',
+      resolve: {
+        userId : function($q, $stateParams){
+                  console.log($stateParams)
+                  var deferred = $q.defer();
+                  if ($stateParams.id) {
+                    deferred.resolve($stateParams.id)
+                  } else {
+                    deferred.reject(false);
                   }
+                  return deferred.promise;
+                }
       }
     })
     .state('main.login', {
       url: 'login',
       templateUrl: 'partials/login.html',
       controller: 'LoginController'
-    })
-    .state('users', {
-      url: '/users',
-      templateUrl: 'partials/home.html',
-      controller: 'HomeController'
-    })
-    .state('users.detail', {
-      url: '/users/{id}',
-      templateUrl: 'partials/home.html',
-      controller: 'HomeController'
     })
 
   $urlRouterProvider.otherwise('/');
@@ -161,6 +178,14 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
     getPlaylists: function(userId){
                     return $http.get('https://partner.api.beatsmusic.com/v1/api/users/' + userId + "/playlists?order_by=created_at%20desc&access_token=" + $window.localStorage['beats_token'],
                       { headers: { Authorization: "Bearer " + $window.localStorage['beats_token'] } }
+                    );
+                  },
+    getUserImage: function(userId){
+                    return { url : 'https://partner.api.beatsmusic.com/v1/api/users/' + userId + '/images/default?client_id=eunjtjg4755smmz8q942e9kp'};
+                  },
+    getTrackInfo: function(trackId){
+                    return $http.get('https://partner.api.beatsmusic.com/v1/api/tracks/' + trackId + '?client_id=eunjtjg4755smmz8q942e9kp', 
+                      { headers: { Authorization: "Bearer " + $window.localStorage['beats_token'] } } 
                     );
                   }
   };

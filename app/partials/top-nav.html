@@ -2,12 +2,12 @@
   <nav class="top-bar" data-topbar data-options="sticky_on: large">
     <section class="top-bar-section">
       <ul class="title-area">
-        <li class="name title-gray" ng-if="$root.currentUser.token"><h1><a ui-sref="home">365bpm</a></h1></li>
+        <li class="name title-gray" ng-if="currentUser.token"><h1><a ui-sref="home">365bpm</a></h1></li>
       </ul>
       <ul class="right" class="ng-cloak" >
-        <li class="ng-cloak" ng-if="!$root.currentUser.token"><a ui-sref="main.login" class="ng-cloak" ng-cloak>Login</a></li>
-        <li class="ng-cloak" ng-if="$root.currentUser.token"><a ui-sref="home" class="ng-cloak" ng-cloak>{{ $root.currentUser.name }}</a></li>
-        <li ng-cloak class="ng-cloak" ng-if="$root.currentUser.token"><a ng-click="$root.logout()" class="ng-cloak" ng-cloak>Logout</a></li>
+        <li class="ng-cloak" ng-if="!currentUser.token"><a ui-sref="main.login" class="ng-cloak" ng-cloak>Login</a></li>
+        <li class="ng-cloak" ng-if="currentUser.token"><a ui-sref="home" class="ng-cloak" ng-cloak>{{ $root.currentUser.name }}</a></li>
+        <li ng-cloak class="ng-cloak" ng-if="currentUser.token"><a ng-click="$root.logout()" class="ng-cloak" ng-cloak>Logout</a></li>
       </ul>
     </section>       
   </nav>

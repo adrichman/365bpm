@@ -1,11 +1,12 @@
 'use strict';
 
 angular.module('switchr')
-.controller('BlogController', ['$state','$scope','$stateParams', '$rootScope', 'Blog','UserService','Restangular','$modal', function ($state, $scope, $stateParams, $rootScope, Blog, UserService, Restangular, $modal) {
+.controller('EditBlogController', ['$state','$scope','$stateParams', '$rootScope', 'Blog','UserService','Restangular','$modal', '$sanitize', function ($state, $scope, $stateParams, $rootScope, Blog, UserService, Restangular, $modal, $sanitize) {
   $scope.submitText = "Submit";
   $scope.entries = UserService.currentUser.entries;
-
-  $scope.$on('edit', function(e, data){
+  $scope.nowEditing.display = "";
+  
+  $scope.$on('playlistSelect', function(e, data){
     Blog.nowEditing.id = data[0];
     $scope.nowEditing.display = Blog.nowEditing.display = data[1];
     Blog.nowEditing.playListId = data[3];
@@ -16,17 +17,18 @@ angular.module('switchr')
   $scope.blogEditInput = {}; 
   $scope.blogEditInput.input = "THIS IS TEST INPUT FOR " + Blog.nowEditing.display;
 
-  $scope.$watch('nowEditing.display', function(newVal, oldVal, scope){
+  $scope.$watch('nowEditing.display', function(newVal, oldVal, $scope){
     var entry = _.find($scope.entries, function(entry){
       return entry.id === Blog.nowEditing.entry_id
     });
 
     if (entry) {
-      scope.blogEditInput.input = entry.body;
+      $scope.blogEditInput.input = entry.body;
       $scope.blogEditInput.originalInput = entry.body;
-      scope.blogEditInput.entry_id = entry.id;       
+      $scope.blogEditInput.entry_id = entry.id;       
     } else {
-      scope.blogEditInput.input = "I have something to say about " + newVal + "."
+      $scope.blogEditInput.input = "I have something to say about " + newVal + "."
+      $scope.blogEditInput.originalInput = $scope.blogEditInput.input;
     }
 
   });
@@ -64,7 +66,7 @@ angular.module('switchr')
     [oneOrAll]("entries", $scope.blogEditInput.entry_id)
     [method]({
       title: Blog.nowEditing.display, 
-      body: $scope.blogEditInput.input,
+      body: $sanitize($scope.blogEditInput.input),
       users_id: UserService.currentUser.id(),
       songs_id: Blog.nowEditing.id,
       playlists_id: Blog.nowEditing.playListId

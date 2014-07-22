@@ -58,9 +58,12 @@ app.use(bodyParser.json());
 //////////////////////////////////////////////
 // serve static assets and route handlers   //
 //////////////////////////////////////////////
+// apiId: beatsClientId
+// auth_flow:auth_code
+// authorization_code:pcytug8wxc5z2cmekkbucbt5,
 var formBeatsTokenReq = function(beatsCode){
   return  { params :  
-            {
+            { 
               client_secret :  beatsSecret,
               client_id     :  beatsClientId,
               redirect_uri  :  'http://www.fakehost.com:8000/home',
@@ -191,18 +194,29 @@ app.get('/beats', function(req, res){
   if (req.query && req.query.code) {
     console.log(req.query);
     var beatsCode = req.query.code;
-    var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?client_secret=' + beatsSecret +'&client_id=' + beatsClientId +'&redirect_uri=http://www.fakehost.com:8000/home&code='+ beatsCode + '&grant_type=authorization_code';
-    var tokenRequestParams = formRdioTokenReq(beatsCode);
-    console.log("tokenRequestURI", tokenRequestURI, "tokenRequestParams", tokenRequestParams);
+    console.log('BEATS CODE', beatsCode);
+
+    // var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?client_secret=' + beatsSecret +'&client_id=' + beatsClientId +'&redirect_uri=http://www.fakehost.com:8000/home&code='+ beatsCode + '&grant_type=authorization_code';
+    // var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?apiId=eunjtjg4755smmz8q942e9kp&auth_flow=auth_code&authorization_code=' + beatsCode;
+    // var tokenRequestParams = formBeatsTokenReq(beatsCode);
+    var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token'
+    // console.log("tokenRequestURI", tokenRequestURI, "tokenRequestParams", tokenRequestParams);
+    
+    // request.post(tokenRequestURI, function(err, httpResponse, body){
     request.post(tokenRequestURI, function(err, httpResponse, body){
-      console.log(err, httpResponse, body);
+      // console.log(err, httpResponse, body);
       res.send(body);
-    })
+    }).form({
+      client_id: beatsClientId,
+      client_secret: beatsSecret,
+      redirect_uri: 'http://www.google.com',
+      code: beatsCode
+    });
   }
 });
 
 app.use(express.static(path.resolve(__dirname + '/../app/')));
 
-app.get('*', function(req, res){
+app.get('/*', function(req, res){
   res.sendfile(path.resolve(__dirname + '/../app/index.html'));
 });

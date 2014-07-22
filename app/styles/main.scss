@@ -205,13 +205,69 @@ h2.blog-nav-heading {
 
 a li.track_info_container {
   color: #222;
-
   &:hover {
     background: white;
   }
 
   &.currentTrack {
     background: white;
+  }
+
+  &.disable {
+    background: rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+  }
+
+}
+
+a.noCursor {
+  cursor: default !important;
+}
+
+div.blog-entry-heading-container {
+  height: 16vh;
+
+  .sub-heading {
+    display: inline-block;
+    float: right;
+    height: 3em;
+    background-color: scale-color($primary-color, $lightness: -30%);
+    border-radius: 10px;
+    padding: 0 2em;
+    z-index: -1;
+    margin-top: .9em;
+    margin-right: 1em;
+    h3 {
+      display: block;
+      position: relative;
+      text-shadow: 2px 2px 1px black;
+      z-index: 1;
+    }
+  }
+}
+
+.entry_image {
+  float: left;
+  margin: 0 .7em;
+  border: 1px solid black;
+}
+
+h1.blog-entry-heading {
+  font-size: 7.5vh;
+  line-height: 6.2rem;
+  text-shadow: 2px 2px 2px black;
+  color: rgb(250,255,189);
+}
+div.blog-entry-content {
+  display: block;
+  margin: 0 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #CCCCCC;
+  color: black;
+  min-height: 16em;
+  p {
+    line-height : .1em;
   }
 }
 

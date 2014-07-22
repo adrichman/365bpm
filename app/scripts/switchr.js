@@ -60,8 +60,8 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
               }
               return deferred.promise;
             }
-      },
-      
+      }
+
     })
     .state('users', {
       url: '/users?id',
@@ -69,12 +69,11 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
       controller: 'UsersController',
       resolve: {
         userId : function($q, $stateParams){
-                  console.log($stateParams)
                   var deferred = $q.defer();
                   if ($stateParams.id) {
                     deferred.resolve($stateParams.id)
                   } else {
-                    deferred.reject(false);
+                    deferred.resolve(false);
                   }
                   return deferred.promise;
                 }
@@ -86,7 +85,11 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
       controller: 'LoginController'
     })
 
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider
+  .when('/users', function(){
+    $state.go('users');
+  })
+  .otherwise('/');
   $locationProvider.html5Mode(true);
 
 })
@@ -101,6 +104,7 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
   }
 
   $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams){ 
+
     if (toParams['access_token']) $window.localStorage['beats_token'] = toParams['access_token']; 
     if (toState.name === 'main.login') return;
     if ($window.localStorage['beats_token'] === null || $window.localStorage['beats_token'] === undefined) {
@@ -109,14 +113,26 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
     }
   });
 })
-.service('UserService', ['$window', function($window){
+.service('UserService', ['$window', 'Restangular', function($window, Restangular){
   return {
     currentUser : {
       token:        function(){ return $window.localStorage['beats_token'] },
       id:           function(){ return $window.localStorage['beats_id'] },
-      name:         function(){ return $window.localStorage['beats_user'] },
+      name:         function(id){ 
+                      if (id){
+                        Restangular.one('users', id).get().then(function(user){ return user.name });
+                      } else { 
+                        return $window.localStorage['beats_user'] 
+                      }
+      },
       userData:     {},
-      img:          { url : '' },
+      img:          function(userId){
+                      userId = userId || $window.localStorage['beats_id'];
+                      return {
+                        url : 'https://partner.api.beatsmusic.com/v1/api/users/' + 
+                        userId + '/images/default?client_id=eunjtjg4755smmz8q942e9kp'
+                      }
+      },
       playlists:    [],
       entries:      []
     }
@@ -149,8 +165,6 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
                         self.getPlaylists(userId).success(function(playList){
                           console.log('getPlaylists', playList);
                           UserService.currentUser.playlists = playList.data.reverse();
-                          UserService.currentUser.img.url  = 'https://partner.api.beatsmusic.com/v1/api/users/' + userId + 
-                                                  '/images/default?client_id=eunjtjg4755smmz8q942e9kp';
                         }).error(function(){
                           throw new Error({message:'There was an error during the getPlayList API call.'})
                         })
@@ -182,6 +196,7 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
                   },
     getUserImage: function(userId){
                     return { url : 'https://partner.api.beatsmusic.com/v1/api/users/' + userId + '/images/default?client_id=eunjtjg4755smmz8q942e9kp'};
+                    { headers: { Authorization: "Bearer " + $window.localStorage['beats_token'] } }
                   },
     getTrackInfo: function(trackId){
                     return $http.get('https://partner.api.beatsmusic.com/v1/api/tracks/' + trackId + '?client_id=eunjtjg4755smmz8q942e9kp', 

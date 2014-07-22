@@ -5463,6 +5463,33 @@ blog {
   .playlist-col h6 {
     text-align: center; }
 
+div.bloggerz {
+  height: 20vh;
+  margin-top: 2em; }
+
+div.users-home h1 {
+  line-height: 1em; }
+div.users-home ul {
+  margin-top: 10vh; }
+  div.users-home ul li {
+    list-style-type: none; }
+    div.users-home ul li div {
+      display: inline-block;
+      position: relative;
+      height: 100%; }
+      div.users-home ul li div img {
+        height: 50px;
+        width: 50px;
+        margin-right: 5px;
+        margin-top: 0;
+        margin-bottom: 0; }
+    div.users-home ul li a {
+      font-size: 30px;
+      color: #999999;
+      vertical-align: middle; }
+      div.users-home ul li a:hover {
+        color: white; }
+
 .mce-path-item {
   display: none !important; }
 
@@ -5595,7 +5622,6 @@ div.blog-entry-heading-container {
     display: inline-block;
     float: right;
     height: 3em;
-    background-color: #95010c;
     border-radius: 10px;
     padding: 0 2em;
     z-index: -1;
@@ -5626,8 +5652,6 @@ div.blog-entry-content {
   background-color: #CCCCCC;
   color: black;
   min-height: 16em; }
-  div.blog-entry-content p {
-    line-height: .1em; }
 
 .track_image {
   width: 30px;

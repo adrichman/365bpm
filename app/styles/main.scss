@@ -59,6 +59,46 @@ blog {
   }
 }
 
+div.bloggerz {
+  height: 20vh;
+  margin-top: 2em;
+  // background-color: white;
+
+}
+
+div.users-home {
+  h1 {
+    line-height: 1em; 
+  }
+  ul {
+    margin-top: 10vh;
+    li {
+      list-style-type: none;
+      
+      div {
+        display: inline-block;
+        position: relative;
+        height:100%;
+
+        img {
+          height: 50px;
+          width: 50px;
+          margin-right: 5px;
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+      }
+      a {
+        font-size: 30px;
+        color: #999999;
+        vertical-align: middle;
+        &:hover {
+          color: white;
+        }
+      }
+    }
+  }
+}
 .mce-path-item {
   display: none !important;
 }
@@ -231,7 +271,7 @@ div.blog-entry-heading-container {
     display: inline-block;
     float: right;
     height: 3em;
-    background-color: scale-color($primary-color, $lightness: -30%);
+    // background-color: scale-color($primary-color, $lightness: -30%);
     border-radius: 10px;
     padding: 0 2em;
     z-index: -1;
@@ -267,7 +307,6 @@ div.blog-entry-content {
   color: black;
   min-height: 16em;
   p {
-    line-height : .1em;
   }
 }
 

@@ -4,6 +4,12 @@ angular.module('switchr')
 .controller('HomeController', function ($window, $state, $scope, $stateParams, $rootScope, $http, $location, $timeout, UserService, loading, edit ) {
   $rootScope.loading = loading;
   $scope.edit = edit;
+  
+  if ('STATE PARAMS', $stateParams.id) {
+    console.log($stateParams)
+    $scope.currentUser.id = $stateParams.id;
+  }
+
   $scope.currentUser.token = UserService.currentUser.token() || null;
   $scope.$watch('currentUser', function(newVal, oldVal){
     console.log('current user watch in home', arguments)

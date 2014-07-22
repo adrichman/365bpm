@@ -2,9 +2,8 @@
 
 angular.module('switchr')
 .controller('PlaylistNavController', function ($window, $state, $scope, $stateParams, $rootScope, $timeout, Blog, UserService, Beats, Restangular) {
-  console.log($state)
   $scope.activeTracks = {};
-  $scope.userImage = $stateParams.id ? Beats.getUserImage($stateParams.id) : UserService.currentUser.img;
+  $scope.userImage = $stateParams.id ? Beats.getUserImage($stateParams.id) : UserService.currentUser.img();
   
   // check for user detail view, or edit view
   if ($state.current.name === "users") {
@@ -73,7 +72,18 @@ angular.module('switchr')
   return {
     restrict: 'E',
     transclude: true,
-    templateUrl: '/partials/playlist-nav.html',
+    templateUrl: 'partials/playlist-nav.html',
     controller: 'PlaylistNavController'
+  }
+})
+.directive('userImage', function(){
+  return {
+    restrict: 'E',
+    transclude: true,
+    templateUrl: 'partials/user-image.html',
+    scope: {
+      userImage : '=',
+      loading   : '='
+    }
   }
 });

@@ -1,5 +1,17 @@
 <div class="row">
-  <div class="large-3 columns playlist-col">
+  <div ng-if="!userId" class="users-home">
+    <h1>Check Out Some Bloggerz</h1>
+    <div class="bloggerz">
+      <ul>
+        <li ng-repeat="user in users">
+          <user-image loading="$root.loading" user-image="userImage">
+          </user-image>
+          <a href="/users?id={{user.id}}">{{user.name}}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div ng-if="userId" class="large-3 columns playlist-col">
     <playlist-nav></playlist-nav>
   </div>
   <div class="large-9 columns">

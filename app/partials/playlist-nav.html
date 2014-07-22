@@ -1,6 +1,4 @@
-<div class="userImage-container text-center fade-in" ng-show="!$root.loading" ng-animate-children>
-  <img class="userImage" ng-if="userImage.url" ng-src="{{ userImage.url }}">
-</div>
+<user-image loading="$root.loading" user-image="userImage"></user-image>
 <div ng-hide="active" class="fade-in" ng-if="!loading" ng-animate-children>
   <h6 class="ng-cloak" ng-cloak>{{ currentUser.name }}'s Playlists</h6>
   <accordion close-others="true" ng-repeat="playlist in playlists">

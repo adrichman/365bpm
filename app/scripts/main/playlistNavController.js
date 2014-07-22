@@ -7,10 +7,12 @@ angular.module('switchr')
   
   // check for user detail view, or edit view
   if ($state.current.name === "users") {
-    
-    Beats.getPlaylists($stateParams.id)
+    var userId = $stateParams.id;
+    Beats.getPlaylists(userId)
     .then(function(playlists){
-      
+      Restangular.one('users', userId).get().then(function(user){
+        $scope.currentUser =  user;
+      })
       $scope.playlists = playlists.data.data.reverse();
       
       Restangular.one('users', $stateParams.id).all('entries').getList()

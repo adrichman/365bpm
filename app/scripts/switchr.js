@@ -120,7 +120,7 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
       id:           function(){ return $window.localStorage['beats_id'] },
       name:         function(id){ 
                       if (id){
-                        Restangular.one('users', id).get().then(function(user){ return user.name });
+                        return Restangular.one('users', id).get();
                       } else { 
                         return $window.localStorage['beats_user'] 
                       }

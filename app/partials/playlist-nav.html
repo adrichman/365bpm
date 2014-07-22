@@ -1,6 +1,6 @@
 <user-image loading="$root.loading" user-image="userImage"></user-image>
 <div ng-hide="active" class="fade-in" ng-if="!loading" ng-animate-children>
-  <h6 class="ng-cloak" ng-cloak>{{ currentUser.name }}'s Playlists</h6>
+  <h6 ng-if="currentUser.name" class="ng-cloak" ng-cloak>{{ currentUser.name }}'s Playlists</h6>
   <accordion close-others="true" ng-repeat="playlist in playlists">
     <accordion-group heading="{{playlist.name}}" is-open="false" class="fade-in" ng-if="true" ng-animate-children>
       <img class="playlist_image" src='https://partner.api.beatsmusic.com/v1/api/playlists/{{ playlist.id }}/images/default?client_id=eunjtjg4755smmz8q942e9kp'>

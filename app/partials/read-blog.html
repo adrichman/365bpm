@@ -1,13 +1,13 @@
-<div class="blog-entry-heading-container fade-in" ng-animate-children>
-  <h1 class="blog-entry-heading">
+<div class="blog-entry-heading-container fade-in ng-cloak" ng-animate-children ng-cloak>
+  <h1 class="blog-entry-heading ng-cloak" ng-cloak>
     {{nowReading.display}}
   </h1>
-  <div class="sub-heading" ng-if="nowReading.track['artist_display_name']">
+  <div class="sub-heading ng-cloak" ng-if="nowReading.track['artist_display_name']" ng-cloak>
     <h3>by {{ nowReading.track['artist_display_name'] }} </h3>
   </div>
 </div>
 
-<div ng-if="nowReading.id" class="blog-entry-content fade-in" ng-animate-children>
+<div ng-if="nowReading.id" class="blog-entry-content fade-in ng-cloak" ng-animate-children ng-cloak>
   <img ng-if="nowReading.id" class="entry_image" src='https://partner.api.beatsmusic.com/v1/api/tracks/{{nowReading.id}}/images/default?client_id=eunjtjg4755smmz8q942e9kp'>
   <div ng-bind-html="nowReading.entry"></div>
 </div>

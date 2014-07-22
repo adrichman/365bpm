@@ -1,17 +1,14 @@
 'user strict';
 
 var knex = require('knex')({
-  client: 'pg',
-  connection: {
-    database: process.env.DB_365BPM_DB,
-    user:     process.env.DB_365BPM_USER,
-    password: process.env.DB_365BPM_PWD
-  }
+  client: 'postgres',
+  connection: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
 });
 
 var bookshelf = require('bookshelf')(knex);
 bookshelf.plugin('registry');
 
+console.log('connected to database', process.env.DB_365BPM_DB)
 module.exports = {
 
   users : bookshelf.model('User',{ 

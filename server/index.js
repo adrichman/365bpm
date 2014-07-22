@@ -21,6 +21,7 @@ var express         = require('express'),
 //////////////////////////////////////////////
 // Start Me Up                              //
 //////////////////////////////////////////////
+
 app.listen(port);
 console.log('Server listening on port: ' + port);
 
@@ -65,7 +66,7 @@ var formBeatsTokenReq = function(beatsCode){
             { 
               client_secret :  beatsSecret,
               client_id     :  beatsClientId,
-              redirect_uri  :  'http://www.fakehost.com:8000/home',
+              redirect_uri  :  'http://beats-365bpm.herokuapp.com/home',
               code          :  beatsCode,
               grant_type    :  'authorization_code'
             }
@@ -99,6 +100,7 @@ app.post('/api/v1/sync', function(req, res){
     })
     .catch(function(){
       console.log('catch',arguments);
+      res.send(arguments)
     })
 
     var Playlist = new db.playlists();
@@ -136,6 +138,7 @@ app.post('/api/v1/sync', function(req, res){
       })
       .catch(function(){
         console.log('catch',arguments);
+        res.send(arguments)
       })
     })
   }

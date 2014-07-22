@@ -3,7 +3,7 @@
 angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', 'mm.foundation', 'ngAnimate', 'ui.tinymce', 'ngSanitize'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
   
-  RestangularProvider.setBaseUrl('http://www.fakehost.com:8000/api/v1');
+  RestangularProvider.setBaseUrl('http://beats-365bpm.herokuapp.com/api/v1');
 
   $stateProvider
   .state('main', {

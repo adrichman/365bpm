@@ -1,7 +1,12 @@
 {
   "name": "365bpm",
   "version": "0.1.0",
-  "dependencies": {},
+  "scripts":{
+    "postinstall": "bower install"
+  },
+  "dependencies": {
+    "bower":"latest"
+  },
   "devDependencies": {
     "gulp": "^3.6.0",
     "gulp-autoprefixer": "^0.0.6",

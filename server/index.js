@@ -28,15 +28,14 @@ console.log('Server listening on port: ' + port);
 // express logging, content security policy //
 //////////////////////////////////////////////
 app.use(helpers.cors);
-app.use(helmet());
 
 //////////////////////////////////////////////
 // cookie and session middleware            //
 //////////////////////////////////////////////
-app.use(cookieParser());
-app.use(cookieSession({ secret: secretKey, cookie: { maxAge: 60 * 60 * 1000 }}));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json());
+// app.use(cookieParser());
+// app.use(cookieSession({ secret: secretKey, cookie: { maxAge: 60 * 60 * 1000 }}));
+// app.use(bodyParser.urlencoded({ extended: false }))
+// app.use(bodyParser.json());
 
 
 //////////////////////////////////////////////
@@ -215,8 +214,8 @@ app.get('/beats', function(req, res){
   }
 });
 
-app.use(express.static(path.resolve(__dirname + '/../app/')));
 
-app.get('/*', function(req, res){
-  res.sendfile(path.resolve(__dirname + '/../app/index.html'));
+app.use(express.static(__dirname + "/../app"));
+app.get('*', function(req, res){
+  res.sendfile(__dirname + '/../app/index.html');
 });

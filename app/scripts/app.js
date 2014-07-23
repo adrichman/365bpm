@@ -109,7 +109,7 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
   // some client side route protection never hurt anybody!
   $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams){ 
     console.log(arguments);
-    if (toState !== 'users'){
+    if (toState.name !== 'users'){
       if (toParams['access_token']) $window.localStorage['beats_token'] = toParams['access_token']; 
       if (toState.name === 'main.login') return;
       if ($window.localStorage['beats_token'] === null || $window.localStorage['beats_token'] === undefined) {

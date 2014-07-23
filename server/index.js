@@ -66,7 +66,7 @@ var formBeatsTokenReq = function(beatsCode){
             { 
               client_secret :  beatsSecret,
               client_id     :  beatsClientId,
-              redirect_uri  :  'http://beats-365bpm.herokuapp.com/home',
+              redirect_uri  :  'http://www.fakehost.com:8000/home',
               code          :  beatsCode,
               grant_type    :  'authorization_code'
             }

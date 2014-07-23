@@ -28,7 +28,7 @@ angular.module('switchr')
       $scope.blogEditInput.originalInput = entry.body;
       $scope.blogEditInput.entry_id = entry.id;       
     } else {
-      $scope.blogEditInput.input = "I have something to say about " + newVal + "."
+      $scope.blogEditInput.input = "";
       $scope.blogEditInput.originalInput = $scope.blogEditInput.input;
     }
 

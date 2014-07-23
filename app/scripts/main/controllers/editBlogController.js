@@ -37,12 +37,12 @@ angular.module('switchr')
   $scope.tinymceOptions = {
     theme: "modern",
     skin: "light",
-    // plugins: [
+    plugins: [
     //   "advlist autolink lists link image charmap print preview hr anchor pagebreak",
     //   "searchreplace visualblocks visualchars code fullscreen",
     //   "insertdatetime media nonbreaking save table contextmenu directionality",
-    //   "emoticons template paste textcolor"
-    // ],
+      "emoticons template paste textcolor"
+    ],
     toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
     toolbar2: "print preview media | forecolor backcolor emoticons",
     image_advtab: true,

@@ -107,7 +107,6 @@ console.log(req);
     var Playlist = new db.playlists();
 
     playlists.forEach(function(playlist){
-      playlist = JSON.parse(playlist);
       Playlist.fetch({ id : playlist.id }).then(function(data){
         if (!data){
           var params =  {

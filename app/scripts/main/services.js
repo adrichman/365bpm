@@ -129,12 +129,15 @@ angular.module('switchr')
   // Helper method to save all Beats data to the app's DB  //
   ///////////////////////////////////////////////////////////   
     sync  : function(UserService){
-              return $http.post('http://www.fakehost.com:8000/api/v1/sync', null, {
-                params: {
+              return $http.post('http://beats-365bpm.herokuapp.com/api/v1/sync', 
+              { params:{
                   currentUser : UserService.currentUser,
                   userData    : UserService.currentUser.userData,
                   playlists   : UserService.currentUser.playlists
                 }
+              },
+              { 
+                contentType: "application/json"
               });
               win.user = scope;
             }

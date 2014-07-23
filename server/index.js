@@ -73,10 +73,11 @@ var formBeatsTokenReq = function(beatsCode){
           }
 };
 
-app.post('/api/v1/sync', function(req, res){  
-  var currentUser = JSON.parse(req.query.currentUser);
-  var userData = JSON.parse(req.query.userData);
-  var playlists = req.query.playlists;
+app.post('/api/v1/sync', function(req, res){ 
+console.log(req); 
+  var currentUser = JSON.parse(req.body.data.currentUser);
+  var userData = JSON.parse(req.body.data.userData);
+  var playlists = req.body.data.playlists;
   if (userData.id !== undefined) {
     var User = new db.users();
     User.fetch({ id :userData.id })
@@ -194,7 +195,6 @@ app.get('/api/v1/:model/:id/entries/:entry_id', function(req,res){
 
 app.get('/beats', function(req, res){
   if (req.query && req.query.code) {
-    console.log(req.query);
     var beatsCode = req.query.code;
     console.log('BEATS CODE', beatsCode);
 
@@ -218,7 +218,9 @@ app.get('/beats', function(req, res){
 });
 
 app.get('/scripts/*', function(req, res){
-  console.log(req);
+  res.sendfile(path.resolve(__dirname + '/../app' + req.url));
+});
+app.get('/bower_components/*', function(req, res){
   res.sendfile(path.resolve(__dirname + '/../app' + req.url));
 });
 app.use(express.static(__dirname + "/../app"));

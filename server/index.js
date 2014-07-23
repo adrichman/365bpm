@@ -217,7 +217,10 @@ app.get('/beats', function(req, res){
   }
 });
 
-
+app.get('/scripts/*', function(req, res){
+  console.log(req);
+  res.sendfile(path.resolve(__dirname + '/../app' + req.url));
+});
 app.use(express.static(__dirname + "/../app"));
 
 app.get('/*', function(req, res){

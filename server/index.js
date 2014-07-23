@@ -33,10 +33,10 @@ app.use(helpers.cors);
 //////////////////////////////////////////////
 // cookie and session middleware            //
 //////////////////////////////////////////////
-// app.use(cookieParser());
-// app.use(cookieSession({ secret: secretKey, cookie: { maxAge: 60 * 60 * 1000 }}));
-// app.use(bodyParser.urlencoded({ extended: false }))
-// app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cookieSession({ secret: secretKey, cookie: { maxAge: 60 * 60 * 1000 }}));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json());
 
 
 //////////////////////////////////////////////
@@ -75,9 +75,9 @@ var formBeatsTokenReq = function(beatsCode){
 
 app.post('/api/v1/sync', function(req, res){ 
 console.log(req); 
-  var currentUser = req.params.currentUser;
-  var userData = req.params.userData;
-  var playlists = req.params.playlists;
+  var currentUser = req.body.params.currentUser;
+  var userData = req.body.params.userData;
+  var playlists = req.body.params.playlists;
   if (userData.id !== undefined) {
     var User = new db.users();
     User.fetch({ id :userData.id })

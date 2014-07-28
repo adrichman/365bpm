@@ -10,7 +10,7 @@ angular.module('switchr')
   if (!userId) {
     Restangular.all('users').getList().then(function(users){
       users.forEach(function(user){ 
-        $scope.userImage = UserService.currentUser.img(user.id);
+        user.userImage = Beats.getUserImage(user.id);
         $scope.users.push(user);
       });
     })

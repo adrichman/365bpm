@@ -9,6 +9,7 @@ var express         = require('express'),
     helmet          = require('helmet'),
     helpers         = require('./helpers'),
     db              = require('./models.js'),
+    Promise         = require('bluebird'),
     port            = process.env.PORT || 8000,
     beatsSecret     = process.env.BEATS_SWITCHR_SECRET,
     beatsClientId   = process.env.BEATS_SWITCHR_CLIENT_ID,
@@ -66,101 +67,164 @@ var formBeatsTokenReq = function(beatsCode){
             { 
               client_secret :  beatsSecret,
               client_id     :  beatsClientId,
-              redirect_uri  :  'http://www.fakehost.com:8000/home',
+              redirect_uri  :  'http://beats-365bpm.herokuapp.com/home',
               code          :  beatsCode,
               grant_type    :  'authorization_code'
             }
           }
 };
 
-app.post('/api/v1/sync', function(req, res){ 
-console.log(req); 
+var syncPlaylists = function(playlistSongs, promises, playlists, cb){
+  var count = 0;
+  var playlistModels = [];
+  var promises = [];
+  var savePromises = [];
+  var playlistsHash = {};
+  playlists.forEach(function(playlist){
+    var Playlist = new db.playlists({ id : playlist.id });
+    playlistsHash[playlist.id] = playlist;
+    Playlist.fetch().then(function(model){
+      var method = 'insert';
+      // console.log('return data from playist fetch', model);
+      var params =  {
+        id : playlist.id,
+        name: playlist.name,
+        users_id: playlist.refs.author.id
+      };
+      if (model && model.id){
+        method = 'update';
+      }
+      count++
+      savePromises.push(Playlist.save(params, { method: method }));
+      if (count === playlists.length){
+        Promise.all(savePromises).then(function(models){
+          // console.log('db_playlist_response', models);
+          syncSongs(playlist.refs.tracks, playlistSongs, function(playlistSongs){
+            Playlist.songs().attach(playlistSongs, { patch: true}).then(function(model){      
+              count++;
+              // console.log(count, playlists.length);
+              if (count >= playlists.length) {
+                cb(model, playlistSongs)
+              };
+            })
+          });
+        })
+      }
+    });
+  }) 
+};
+
+var syncSongs = function(tracks, playlistSongs, cb){        
+  var promises = [];
+  var songPromises = [];
+  var songsHash = {};
+  var count = 0;
+  tracks.forEach(function(track){
+    // console.log('TRACK ID', track.id, track)
+    songsHash[track.id] = track.display;
+
+    var Song = new db.songs();
+
+    Song.fetch({ id : track.id }).then(function(return_song){
+      // console.log('return_song', return_song,songsHash[return_song.attributes.id])
+      var song = return_song;
+      var method = 'insert';
+      var params =  {
+        id : return_song.attributes.id,
+        title : songsHash[return_song.attributes.id]
+      };
+      if (!song){
+        count++;
+        songPromises.push(Song.save(params, { method: 'insert' }));
+      } else {
+        count++;
+        // console.log('SONG ID', song && song.id)
+        song && playlistSongs.push(song.id);
+        songPromises.push(Song.save(params, { method: 'update' }));
+      }
+      if (tracks.length === count) {
+        Promise.all(songPromises).then(function(){
+          // console.log('promises', arguments)
+          cb(playlistSongs)
+        })
+      }
+    });
+  })
+}
+
+
+app.post('/api/v1/sync', function(req, res){
+  console.log(req.body.params)
   var currentUser = req.body.params.currentUser;
   var userData = req.body.params.userData;
   var playlists = req.body.params.playlists;
+  var playlistSongs = [];
+  var promises = [];
+  var method = 'insert';
+
   if (userData.id !== undefined) {
     var User = new db.users();
     User.fetch({ id :userData.id })
     .then(function(data){
-      if (!data) {
-        var params =  {
-                        id : userData.id,
-                        name: userData['full_name'],
-                        username: userData.username,
-                        email: 'fake@fakehost.com',
-                        last_login: new Date().toISOString(),
-                        beats_token: currentUser.expires
-                      };
-
-        User.save(params ,{ method: 'insert'} ).then(function(db_response){
-          res.send(db_response)
-        });
-      } else {
-        res.send('got it already');
-      }
+      // console.log('fetched user', data);
+      if (data.id) method = 'update';
+      var params =  {
+        id : userData.id,
+        name: userData['full_name'],
+        username: userData.username,
+        email: 'fake@fakehost.com',
+        last_login: new Date().toISOString(),
+        beats_token: currentUser.expires
+      };
+      return params;
     })
-    .catch(function(){
-      console.log('catch',arguments);
-      res.send(arguments)
-    })
-
-    var Playlist = new db.playlists();
-
-    playlists.forEach(function(playlist){
-      Playlist.fetch({ id : playlist.id }).then(function(data){
-        if (!data){
-          var params =  {
-                          id : playlist.id,
-                          name: playlist.name,
-                          users_id: playlist.refs.author.id
-                        };
-
-          Playlist.save(params, { method: 'insert' }).then(function(db_response){
-            console.log('db_playlist_response', db_response);
-          });
-        }
-        
-        var Song = new db.songs();
-        playlist.refs.tracks.forEach(function(track){
-          Song.fetch({ id : track.id }).then(function(data){
-            if (!data){
-              var params =  {
-                              id : track.id,
-                              title : track.display
-                            };
-
-              Song.save(params, { method: 'insert' }).then(function(db_response){
-                console.log('db_song_response', db_response);
-              });
-            }
-          })
+    .then(function(params){
+      User.save(params ,{ method: method} ).then(function(db_response){
+        // console.log('user save response', db_response)
+        syncPlaylists(playlistSongs, promises, playlists, function(model, playlistSongs){      
+          // console.log('saved attach??', arguments);
+          res.send(204);
         })
       })
-      .catch(function(){
-        console.log('catch',arguments);
-        res.send(arguments)
-      })
     })
+  } else {
+    res.send(400);
   }
 });
 
 app.get('/api/v1/:model', function(req,res){
-  console.log(req.query);
   var model = new db[req.params.model.toLowerCase()]();
   model.fetchAll().then(function(data){
-    console.log(data.models);
     res.json(data.models);
   })
 });
 app.get('/api/v1/:model/:id', function(req,res){
-  console.log(req.params);
   var model = new db[req.params.model.toLowerCase()]();
   model.where({ id : req.params.id }).fetch().then(function(data){
     res.json(data);
   })
 });
+app.get('/api/v1/:model/:id/playlists', function(req,res){
+  var model = new db['playlists']();
+  
+  var params = {};
+  params[req.params.model + '_id'] = req.params.id;
+  
+  model.where(params).fetchAll().then(function(data){
+    res.json(data);
+  })
+});
+app.get('/api/v1/:model/:id/songs', function(req,res){
+  var model = new db['songs']();
+  
+  var params = {};
+  params[req.params.model + '_id'] = req.params.id;
+  
+  model.where(params).fetchAll().then(function(data){
+    res.json(data);
+  })
+});
 app.get('/api/v1/:model/:id/entries', function(req,res){
-  console.log(req.params);
   var model = new db['entries']();
   
   var params = {};
@@ -171,21 +235,18 @@ app.get('/api/v1/:model/:id/entries', function(req,res){
   })
 });
 app.post('/api/v1/:model/:id/entries', function(req,res){
-  console.log(req.body, req.query);
   var model = new db['entries']();
   model.save(req.body ,{ method: 'insert'} ).then(function(db_response){
     res.send(db_response)
   });
 });
 app.patch('/api/v1/:model/:id/entries/:entry_id', function(req,res){
-  console.log(req.body, req.query);
   var model = new db['entries']();
   model.where({ id: req.params.entry_id }).save(req.body ,{ method: 'update'} ).then(function(db_response){
     res.send(db_response)
   });
 });
 app.get('/api/v1/:model/:id/entries/:entry_id', function(req,res){
-  console.log(req.body);
   var model = new db['entries']();
   model.fetch({ id : req.body.entry_id }).then(function(data){
     res.json(data);
@@ -197,7 +258,7 @@ app.get('/beats', function(req, res){
     var beatsCode = req.query.code;
     console.log('BEATS CODE', beatsCode);
 
-    // var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?client_secret=' + beatsSecret +'&client_id=' + beatsClientId +'&redirect_uri=http://www.fakehost.com:8000/home&code='+ beatsCode + '&grant_type=authorization_code';
+    // var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?client_secret=' + beatsSecret +'&client_id=' + beatsClientId +'&redirect_uri=http://beats-365bpm.herokuapp.com/home&code='+ beatsCode + '&grant_type=authorization_code';
     // var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token?apiId=eunjtjg4755smmz8q942e9kp&auth_flow=auth_code&authorization_code=' + beatsCode;
     // var tokenRequestParams = formBeatsTokenReq(beatsCode);
     var tokenRequestURI = 'https://partner.api.beatsmusic.com/oauth2/token'

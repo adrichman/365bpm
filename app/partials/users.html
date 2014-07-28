@@ -4,7 +4,7 @@
     <div class="bloggerz">
       <ul>
         <li ng-repeat="user in users">
-          <user-image loading="$root.loading" user-image="userImage">
+          <user-image loading="$root.loading" user-image="user.userImage">
           </user-image>
           <a href="/users?id={{user.id}}">{{user.name}}</a>
         </li>

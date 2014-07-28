@@ -3,7 +3,7 @@
 angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', 'mm.foundation', 'ngAnimate', 'ui.tinymce', 'ngSanitize'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, RestangularProvider) {
   
-  RestangularProvider.setBaseUrl('http://www.fakehost.com:8000/api/v1');
+  RestangularProvider.setBaseUrl('http://beats-365bpm.herokuapp.com/api/v1');
 
   $stateProvider
   .state('main', {
@@ -108,7 +108,6 @@ angular.module('switchr', ['ngTouch', 'restangular', 'ui.router', 'ngCookies', '
 
   // some client side route protection never hurt anybody!
   $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams){ 
-    console.log(arguments);
     if (toState.name !== 'users'){
       if (toParams['access_token']) $window.localStorage['beats_token'] = toParams['access_token']; 
       if (toState.name === 'main.login') return;

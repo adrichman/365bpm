@@ -8,46 +8,60 @@ var knex = require('knex')({
 var bookshelf = require('bookshelf')(knex);
 bookshelf.plugin('registry');
 
-console.log('connected to database', process.env.DB_365BPM_DB)
-module.exports = {
+console.log('connected to database', process.env.DATABASE_URL);
 
-  users : bookshelf.model('User',{ 
+  var User = bookshelf.model('User',{ 
     tableName   : 'users',
-    playlists   : function(){ return this.hasMany(this['Playlist']) },
-    entries     : function(){ return this.hasMany(this['Entry']) }
-  }),
+    hasTimestamps: true,
+    playlists   : function(){ return this.hasMany(Playlist) },
+    entries     : function(){ return this.hasMany(Entry) }
+  });
 
-  playlists : bookshelf.model('Playlist',{ 
+  var Playlist = bookshelf.model('Playlist',{ 
     tableName   : 'playlists',
-    user        : function(){ return this.belongsTo(this['User']) },
-    songs       : function(){ return this.hasMany(this['Song']) }
-  }),
+    hasTimestamps: true,
+    user        : function(){ return this.belongsTo(User) },
+    songs       : function(){ return this.belongsToMany(Song).through('playlists_songs', 'playlists_id', 'songs_id') }
+  });
 
-  artists : bookshelf.model('Artist',{ 
+  var Artist = bookshelf.model('Artist',{ 
     tableName   : 'artists',
-    songs       : function(){ return this.hasMany(this['Song']) }
-  }),
+    songs       : function(){ return this.belongsToMany(Song).through('artists_songs', 'artists_id', 'songs_id') }
+  });
 
-  songs : bookshelf.model('Song',{ 
+  var Song = bookshelf.model('Song',{ 
     tableName   : 'songs',
-    artists     : function(){ return this.hasMany(this['Artist']) },
-    playlists   : function(){ return this.belongsToMany(this['Playlist'], 'song_id') }
-  }),
+    artists     : function(){ return this.belongsToMany(Artist).through('Artist_Song', 'artists_id', 'songs_id') },
+    playlists   : function(){ return this.belongsToMany(Playlist).through('Playlist_Song', 'playlists_id', 'songs_id') }
+  });
 
-  artists_Songs : bookshelf.model('Artists_Songs',{ 
-    tableName   : 'artists_songs'
-  }),
-
-  playlists_Songs : bookshelf.model('Playlist_Songs',{ 
-    tableName   : 'playlists_songs',
-  }),
-
-  entries : bookshelf.model('Entry',{ 
+  var Entry = bookshelf.model('Entry',{ 
     tableName   : 'entries',
-    song        : function(){ return this.hasOne(this['Song'], 'song_id') },
-    artist      : function(){ return this.hasOne(this['Artist']).through(this['Song'], 'song_id') },
-    user        : function(){ return this.hasOne(this['User']).through(this['Playlist'], 'user_id') },
-    playlist    : function(){ return this.belongsTo(this['Playlist'], 'playlist_id') }
-  })
+    hasTimestamps: true,
+    song        : function(){ return this.hasOne(Song, 'song_id') },
+    artist      : function(){ return this.hasMany(Artist).through(Song, 'song_id') },
+    user        : function(){ return this.hasOne(User).through(Playlist, 'user_id') },
+    playlist    : function(){ return this.belongsTo(Playlist, 'playlist_id') }
+  });
 
+  var Artist_Song = bookshelf.model('artists_songs',{
+    tableName: 'artists_songs',
+    artists     : function () { return this.hasMany('Artist') },
+    songs       : function () { return this.hasMany('Song') }
+  });
+
+  var Playlist_Song = bookshelf.model('playlists_songs',{
+    tableName: 'playlists_songs',
+    playlists   : function () { return this.hasMany('Playlist') },
+    songs       : function () { return this.hasMany('Song') }
+  });
+
+module.exports = {
+  users          : User,
+  playlists      : Playlist,
+  artists        : Artist,
+  songs          : Song,
+  entries        : Entry,
+  artists_songs  : Artist_Song,
+  playlists_songs: Playlist_Song,
 };

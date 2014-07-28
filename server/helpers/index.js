@@ -2,7 +2,7 @@
 
 function cors(req, res, next) {
   res.setHeader("access-control-allow-origin", "*");
-  res.setHeader("access-control-allow-methods", "OPTIONS, GET, POST, PUT, DELETE");
+  res.setHeader("access-control-allow-methods", "OPTIONS, GET, POST, PUT, DELETE, PATCH");
   res.setHeader("access-control-allow-headers", "Content-Type", "Data-Type");
   res.setHeader("access-control-max-age", 10);
 

@@ -2,7 +2,12 @@
 
 var knex = require('knex')({
   client: 'postgres',
-  connection: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
+  // connection: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
+  connection: {
+    database: 'beats365bpm',
+    user: 'Port-O-Bucket',
+    password: ''
+  }
 });
 
 var bookshelf = require('bookshelf')(knex);
@@ -21,7 +26,8 @@ console.log('connected to database', process.env.DATABASE_URL);
     tableName   : 'playlists',
     hasTimestamps: true,
     user        : function(){ return this.belongsTo(User) },
-    songs       : function(){ return this.belongsToMany(Song).through('playlists_songs', 'playlists_id', 'songs_id') }
+    songs       : function(){ return this.belongsToMany(Song).through('playlists_songs', 'playlists_id', 'songs_id') },
+    entry       : function(){ return this.belongsTo(Entry) }
   });
 
   var Artist = bookshelf.model('Artist',{ 
@@ -31,8 +37,8 @@ console.log('connected to database', process.env.DATABASE_URL);
 
   var Song = bookshelf.model('Song',{ 
     tableName   : 'songs',
-    artists     : function(){ return this.belongsToMany(Artist).through('Artist_Song', 'artists_id', 'songs_id') },
-    playlists   : function(){ return this.belongsToMany(Playlist).through('Playlist_Song', 'playlists_id', 'songs_id') }
+    artists     : function(){ return this.belongsToMany(Artist).through('artists_songs', 'artists_id', 'songs_id') },
+    playlists   : function(){ return this.belongsToMany(Playlist).through('playlists_songs', 'playlists_id', 'songs_id') }
   });
 
   var Entry = bookshelf.model('Entry',{ 
@@ -41,7 +47,7 @@ console.log('connected to database', process.env.DATABASE_URL);
     song        : function(){ return this.hasOne(Song, 'song_id') },
     artist      : function(){ return this.hasMany(Artist).through(Song, 'song_id') },
     user        : function(){ return this.hasOne(User).through(Playlist, 'user_id') },
-    playlist    : function(){ return this.belongsTo(Playlist, 'playlist_id') }
+    playlist    : function(){ return this.hasOne(Playlist) }
   });
 
   var Artist_Song = bookshelf.model('artists_songs',{
@@ -56,6 +62,12 @@ console.log('connected to database', process.env.DATABASE_URL);
     songs       : function () { return this.hasMany('Song') }
   });
 
+  var Entry_Playlist = bookshelf.model('entries_playlists',{
+    tableName: 'entries_playlists',
+    playlists   : function () { return this.hasMany('Playlist') },
+    entries     : function () { return this.hasMany('Entry') }
+  });
+
 module.exports = {
   users          : User,
   playlists      : Playlist,
@@ -64,4 +76,5 @@ module.exports = {
   entries        : Entry,
   artists_songs  : Artist_Song,
   playlists_songs: Playlist_Song,
+  entries_playlists: Entry_Playlist
 };

@@ -45,7 +45,7 @@ top-nav-bar {
   position:fixed;
   width: 100%;
   height: 50px;
-  z-index:1;
+  z-index:5;
 }
 
 blog {
@@ -260,6 +260,9 @@ a.noCursor {
 
 div.blog-entry-heading-container {
   height: 16vh;
+  h1{
+    line-height: 7vh;
+  }
 
   .sub-heading {
     display: inline-block;
@@ -273,6 +276,7 @@ div.blog-entry-heading-container {
     margin-right: 1em;
     h3 {
       display: block;
+      line-height: 7vh;
       position: relative;
       text-shadow: 2px 2px 1px black;
       z-index: 1;

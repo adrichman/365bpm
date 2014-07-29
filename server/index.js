@@ -85,7 +85,7 @@ var syncPlaylists = function(playlistSongs, promises, playlists, cb){
     playlistsHash[playlist.id] = playlist;
     Playlist.fetch().then(function(model){
       var method = 'insert';
-      // console.log('return data from playist fetch', model);
+      console.log('return data from playist fetch', model);
       var params =  {
         id : playlist.id,
         name: playlist.name,
@@ -95,17 +95,25 @@ var syncPlaylists = function(playlistSongs, promises, playlists, cb){
         method = 'update';
       }
       count++
+      var Playlist = new db.playlists({ id : playlist.id });
       savePromises.push(Playlist.save(params, { method: method }));
       if (count === playlists.length){
         Promise.all(savePromises).then(function(models){
           // console.log('db_playlist_response', models);
           syncSongs(playlist.refs.tracks, playlistSongs, function(playlistSongs){
-            Playlist.songs().attach(playlistSongs, { patch: true}).then(function(model){      
-              count++;
-              // console.log(count, playlists.length);
-              if (count >= playlists.length) {
-                cb(model, playlistSongs)
-              };
+            var playlistCount = 0;
+            playlists.forEach(function(playlist){
+              var Playlist = new db.playlists();
+              Playlist.fetch({ id : playlist.id }).then(function(model){
+                console.log(model)
+                model.songs().attach(playlistSongs).then(function(model){      
+                  playlistCount++;
+                  // console.log(count, playlists.length);
+                  if (playlistCount >= playlists.length) {
+                    cb(model, playlistSongs)
+                  };
+                })
+              })
             })
           });
         })
@@ -126,22 +134,21 @@ var syncSongs = function(tracks, playlistSongs, cb){
     var Song = new db.songs();
 
     Song.fetch({ id : track.id }).then(function(return_song){
-      // console.log('return_song', return_song,songsHash[return_song.attributes.id])
-      var song = return_song;
-      var method = 'insert';
-      var params =  {
-        id : return_song.attributes.id,
-        title : songsHash[return_song.attributes.id]
-      };
-      if (!song){
-        count++;
-        songPromises.push(Song.save(params, { method: 'insert' }));
-      } else {
-        count++;
+      if (return_song){ 
+        // console.log('return_song', return_song,songsHash[return_song.attributes.id])
+        var song = return_song;
+        var method = 'insert';
+        var params =  {
+          id : return_song.attributes.id,
+          title : songsHash[return_song.attributes.id]
+        };
         // console.log('SONG ID', song && song.id)
         song && playlistSongs.push(song.id);
         songPromises.push(Song.save(params, { method: 'update' }));
       }
+
+      count++;
+
       if (tracks.length === count) {
         Promise.all(songPromises).then(function(){
           // console.log('promises', arguments)
@@ -163,11 +170,15 @@ app.post('/api/v1/sync', function(req, res){
   var method = 'insert';
 
   if (userData.id !== undefined) {
-    var User = new db.users();
-    User.fetch({ id :userData.id })
-    .then(function(data){
-      // console.log('fetched user', data);
-      if (data.id) method = 'update';
+    var User = new db.users({ id :userData.id });
+    User.fetch()
+    .then(function(user){
+      // console.log('fetched user', user);
+      method = 'insert';
+      if (user && user.id && !user.isNew()) {
+        method = 'update';
+        console.log('update', user)
+      }
       var params =  {
         id : userData.id,
         name: userData['full_name'],
@@ -179,7 +190,12 @@ app.post('/api/v1/sync', function(req, res){
       return params;
     })
     .then(function(params){
-      User.save(params ,{ method: method} ).then(function(db_response){
+      // console.log('SAVING');
+      User.save(params, { method: method })
+      .catch(function(){
+        // console.log('CATCH', arguments);
+      })
+      .finally(function(db_response){
         // console.log('user save response', db_response)
         syncPlaylists(playlistSongs, promises, playlists, function(model, playlistSongs){      
           // console.log('saved attach??', arguments);
@@ -235,6 +251,7 @@ app.get('/api/v1/:model/:id/entries', function(req,res){
   })
 });
 app.post('/api/v1/:model/:id/entries', function(req,res){
+  console.log(req.body)
   var model = new db['entries']();
   model.save(req.body ,{ method: 'insert'} ).then(function(db_response){
     res.send(db_response)

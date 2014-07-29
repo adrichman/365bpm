@@ -5,8 +5,8 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      database: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory',
-      user:     '',
+      database: 'beats365bpm',
+      user: 'Port-O-Bucket',
       password: ''
     },
     pool: {
@@ -21,8 +21,8 @@ module.exports = {
   staging: {
     client: 'postgresql',
     connection: {
-      database: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory',
-      user:     '',
+      database: 'beats365bpm',
+      user: 'Port-O-Bucket',
       password: ''
     },
     pool: {
@@ -37,8 +37,8 @@ module.exports = {
   production: {
     client: 'postgresql',
     connection: {
-      database: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory',
-      user:     '',
+      database: 'beats365bpm',
+      user: 'Port-O-Bucket',
       password: ''
     },
     pool: {

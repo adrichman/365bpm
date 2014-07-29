@@ -5452,7 +5452,7 @@ top-nav-bar {
   position: fixed;
   width: 100%;
   height: 50px;
-  z-index: 1; }
+  z-index: 5; }
 
 blog {
   overflow-y: hidden;
@@ -5618,6 +5618,8 @@ a.noCursor {
 
 div.blog-entry-heading-container {
   height: 16vh; }
+  div.blog-entry-heading-container h1 {
+    line-height: 7vh; }
   div.blog-entry-heading-container .sub-heading {
     display: inline-block;
     float: right;
@@ -5629,6 +5631,7 @@ div.blog-entry-heading-container {
     margin-right: 1em; }
     div.blog-entry-heading-container .sub-heading h3 {
       display: block;
+      line-height: 7vh;
       position: relative;
       text-shadow: 2px 2px 1px black;
       z-index: 1; }

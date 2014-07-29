@@ -45,7 +45,6 @@ angular.module('switchr')
           } else {
             Restangular.all('songs').getList().then(function(songs){
               songs.forEach(function(song){
-                debugger;
                 tracks = tracks.concat(_.where(playlist, { id : song.id }));
               })
             })

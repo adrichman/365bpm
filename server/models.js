@@ -2,12 +2,7 @@
 
 var knex = require('knex')({
   client: 'postgres',
-  // connection: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
-  connection: {
-    database: 'beats365bpm',
-    user: 'Port-O-Bucket',
-    password: ''
-  }
+  connection: process.env.DATABASE_URL + '?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory'
 });
 
 var bookshelf = require('bookshelf')(knex);

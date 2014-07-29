@@ -99,16 +99,13 @@ var syncPlaylists = function(playlistSongs, promises, playlists, cb){
       savePromises.push(Playlist.save(params, { method: method }));
       if (count === playlists.length){
         Promise.all(savePromises).then(function(models){
-          // console.log('db_playlist_response', models);
           syncSongs(playlist.refs.tracks, playlistSongs, function(playlistSongs){
             var playlistCount = 0;
             playlists.forEach(function(playlist){
               var Playlist = new db.playlists();
               Playlist.fetch({ id : playlist.id }).then(function(model){
-                console.log(model)
                 model.songs().attach(playlistSongs).then(function(model){      
                   playlistCount++;
-                  // console.log(count, playlists.length);
                   if (playlistCount >= playlists.length) {
                     cb(model, playlistSongs)
                   };
